@@ -9,39 +9,46 @@ signal trap_handler
 signal bomb_handler
 signal banana_peel_handler
 
-@export var boardTilemap: TileMap
+@export var BOARD_TILEMAP: TileMap
+@export var PARTICLES: GPUParticles2D
 
 var rng = RandomNumberGenerator.new()
 var ITEM_METADATA = {
 	Vector2i(0, 1): {
 		"type": Global.ITEMS.CLOCK,
 		"effect_function": "clock_handler",
-		"chance": 0.006
+		"chance": 0.012,
+		"score": 100,
 	},
 	Vector2i(1, 1): {
 		"type": Global.ITEMS.RANDOMIZED_CLOCK,
 		"effect_function": "randomized_clock_handler",
-		"chance": 0.001
+		"chance": 0.0025,
+		"score": 200,
 	},
 	Vector2i(2, 1): {
 		"type": Global.ITEMS.SPEED_BOOST,
 		"effect_function": "speed_boost_handler",
-		"chance": 0.0004
+		"chance": 0.0004,
+		"score": 150,
 	},
 	Vector2i(3, 1): {
 		"type": Global.ITEMS.NOCLIP,
 		"effect_function": "noclip_handler",
-		"chance": 0.0004
+		"chance": 0.0004,
+		"score": 150,
 	},
 	Vector2i(4, 1): {
 		"type": Global.ITEMS.TELEPORTER,
 		"effect_function": "teleporter_handler",
-		"chance": 0.0004
+		"chance": 0.0004,
+		"score": 200,
 	},
 	Vector2i(5, 1): {
 		"type": Global.ITEMS.TRAP,
 		"effect_function": "trap_handler",
-		"chance": 0.0005
+		"chance": 0.0008,
+		"score": 0,
 	},
 	Vector2i(6, 1): {
 		"type": Global.ITEMS.BOMB,
@@ -51,7 +58,8 @@ var ITEM_METADATA = {
 	Vector2i(7, 1): {
 		"type": Global.ITEMS.BANANA_PEEL,
 		"effect_function": "banana_peel_handler",
-		"chance": 0.0005
+		"chance": 0.0005,
+		"score": 100,
 	},
 }
 
@@ -72,7 +80,7 @@ func place_item(chunkCoord = Vector2(0, 0)):
 
 	for i in range(startPos.x, startPos.x + width):
 		for j in range(startPos.y, startPos.y + height):
-			if boardTilemap.get_cell_atlas_coords(0, Vector2i(i, j)) != Global.BOARD_BLOCK.PATH:
+			if BOARD_TILEMAP.get_cell_atlas_coords(0, Vector2i(i, j)) != Global.BOARD_BLOCK.PATH:
 				continue
 			var dice = rng.randf_range(0, 1)
 			var totalChance = 0
@@ -86,9 +94,15 @@ func place_item(chunkCoord = Vector2(0, 0)):
 					totalChance += chance
 
 func apply_item(location):
+	PARTICLES.position = (location * Global.CONSTANT.block_size)\
+		+ Global.CONSTANT.block_size * Vector2i(1, 1) / 2
+	PARTICLES.emitting = true
+
 	var itemAtlasCoords = get_cell_atlas_coords(0, location)
 	var item = ITEM_METADATA.get(itemAtlasCoords)
 	set_cell(0, location, 0, Vector2i(-1, -1))
 	if item == null:
 		return
+
+	Global.currentGameState.score += item.score
 	emit_signal(item.effect_function)

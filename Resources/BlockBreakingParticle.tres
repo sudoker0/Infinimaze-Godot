@@ -1,0 +1,20 @@
+[gd_resource type="ParticleProcessMaterial" format=3 uid="uid://c5aeaupabjoik"]
+
+[resource]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 60.0
+direction = Vector3(0, -1, 0)
+spread = 180.0
+angular_velocity_min = 100.0
+angular_velocity_max = 100.0
+radial_velocity_min = 100.0
+radial_velocity_max = 400.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = 100.0
+radial_accel_max = 100.0
+scale_min = 5.0
+scale_max = 8.0
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.3

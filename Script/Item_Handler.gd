@@ -2,7 +2,7 @@ extends Node
 class_name ItemHandler
 @export var BOARD: TileMap
 @export var PLAYER: CharacterBody2D
-@export var TIMER_LABEL: Label
+@export var TIMER_PROGRESS_BAR: ProgressBar
 @export var INSTANT_EFFECT_LABEL: Label
 @export var EFFECT_LABEL: Label
 
@@ -66,13 +66,13 @@ func clock_handler():
 	rng.randomize()
 	Global.currentGameState.endTime += rng.randf_range(
 		stat.min_clock_time, stat.max_clock_time) * 1000
-	apply_zoom_in(TIMER_LABEL)
+	apply_zoom_in(TIMER_PROGRESS_BAR)
 
 func randomized_clock_hander():
 	rng.randomize()
 	Global.currentGameState.endTime += rng.randf_range(
 		stat.min_randomized_clock_time, stat.max_randomized_clock_time) * 1000
-	apply_zoom_in(TIMER_LABEL)
+	apply_zoom_in(TIMER_PROGRESS_BAR)
 
 func speed_boost_handler():
 	apply_zoom_in(EFFECT_LABEL)
@@ -161,6 +161,9 @@ func teleporter_handler():
 	PLAYER.position = \
 		possibleLocation[rng.randi_range(0, len(possibleLocation) - 1)]
 
+	Global.currentGameState.endTime -= stat.teleporter_decrease_time * 1000
+	apply_zoom_in(TIMER_PROGRESS_BAR)
+
 func trap_handler():
 	apply_zoom_in(EFFECT_LABEL)
 	rng.randomize()
@@ -202,7 +205,7 @@ func banana_peel_handler():
 func undo_banana_peel(previous_data):
 	PLAYER.FRICTION = previous_data.FRICTION
 
-func _process(delta):
+func _process(_delta):
 	EFFECT_LABEL.text = ""
 	var currentTime = Time.get_ticks_msec()
 

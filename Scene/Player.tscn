@@ -3,16 +3,18 @@
 [ext_resource type="Script" path="res://Script/Player.gd" id="1_l1reb"]
 [ext_resource type="Texture2D" uid="uid://cssl7h8h2v3ys" path="res://Resources/player.png" id="2_srg4j"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6hmpk"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c6bwv"]
+size = Vector2(24, 24)
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(0.75, 0.75)
 script = ExtResource("1_l1reb")
 
 [node name="Camera" type="Camera2D" parent="."]
-zoom = Vector2(1.6, 1.6)
+zoom = Vector2(2, 2)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_6hmpk")
+shape = SubResource("RectangleShape2D_c6bwv")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_left = -12.0
@@ -21,5 +23,3 @@ offset_right = 36.0
 offset_bottom = 36.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_srg4j")
-
-[connection signal="draw" from="." to="." method="_draw"]

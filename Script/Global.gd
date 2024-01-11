@@ -18,6 +18,7 @@ const ITEM_STAT = {
 		"max_noclip": 7.5,
 		"min_teleporter": 10,
 		"max_teleporter": 20,
+		"teleporter_decrease_time": 2,
 		"min_trap": 3,
 		"max_trap": 5,
 		"bomb_radius": 10,
@@ -36,6 +37,7 @@ const ITEM_STAT = {
 		"max_noclip": 5,
 		"min_teleporter": 10,
 		"max_teleporter": 20,
+		"teleporter_decrease_time": 5,
 		"min_trap": 5,
 		"max_trap": 15,
 		"bomb_radius": 20,
@@ -54,6 +56,7 @@ const ITEM_STAT = {
 		"max_noclip": 0,
 		"min_teleporter": 10,
 		"max_teleporter": 20,
+		"teleporter_decrease_time": 7,
 		"min_trap": 10,
 		"max_trap": 30,
 		"bomb_radius": 30,
@@ -90,17 +93,20 @@ const CONSTANT = {
 	"chunk_size": 32,
 	"block_size": 32,
 	"render_distance": 2,
-	"max_time": 99
+	"max_time": 100,
+	"crouching_speed_factor": 0.2,
 }
 
 var currentGameState = {
 	"endTime": 0,
+	"score": 0,
 	"difficulty": Difficulty.MEDIUM
 }
 
 const TEXT = {
 	"timer_text": "TIME LEFT: %.2fs",
 	"teleported_text": "TELEPORTED!",
+	"score_time_text": "SCORE: %s | ELAPSED: %ss"
 }
 
 var Config = {
