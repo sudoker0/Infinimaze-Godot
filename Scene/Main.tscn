@@ -1,0 +1,142 @@
+[gd_scene load_steps=9 format=3 uid="uid://c5dy7lcsxhgj0"]
+
+[ext_resource type="Script" path="res://Script/Main.gd" id="1_2rirn"]
+[ext_resource type="Script" path="res://Script/Item_Handler.gd" id="1_3ui0b"]
+[ext_resource type="TileSet" uid="uid://d2oo4tjp82tyw" path="res://Resources/Board_TileSet.tres" id="1_48wdh"]
+[ext_resource type="Script" path="res://Script/Board_Tilemap.gd" id="2_am8jv"]
+[ext_resource type="PackedScene" uid="uid://cfk0tgew6g812" path="res://Scene/Player.tscn" id="3_6ywuo"]
+[ext_resource type="Script" path="res://Script/Item_Tilemap.gd" id="3_s163v"]
+[ext_resource type="Theme" uid="uid://dparfnssefxjx" path="res://Resources/GameTheme.tres" id="7_vbg7s"]
+
+[sub_resource type="SystemFont" id="SystemFont_aqc1x"]
+font_names = PackedStringArray("MesloLGS NF")
+
+[node name="root" type="Node2D" node_paths=PackedStringArray("TIMER_LABEL", "EFFECT_LABEL", "INSTANT_EFFECT_LABEL", "PLAYER")]
+script = ExtResource("1_2rirn")
+TIMER_LABEL = NodePath("UI/TimerLabel")
+EFFECT_LABEL = NodePath("UI/EffectLabel/Effect")
+INSTANT_EFFECT_LABEL = NodePath("UI/InstantEffect")
+PLAYER = NodePath("Player")
+metadata/_edit_horizontal_guides_ = [32.0, 54.0]
+metadata/_edit_vertical_guides_ = [1096.0]
+
+[node name="Item_Handler" type="Node" parent="." node_paths=PackedStringArray("BOARD", "PLAYER", "TIMER_LABEL", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL")]
+script = ExtResource("1_3ui0b")
+BOARD = NodePath("../Board_Tilemap")
+PLAYER = NodePath("../Player")
+TIMER_LABEL = NodePath("../UI/TimerLabel")
+INSTANT_EFFECT_LABEL = NodePath("../UI/InstantEffect")
+EFFECT_LABEL = NodePath("../UI/EffectLabel/Effect")
+
+[node name="Board_Tilemap" type="TileMap" parent="." node_paths=PackedStringArray("PLAYER", "ITEM_TILEMAP")]
+texture_filter = 1
+tile_set = ExtResource("1_48wdh")
+format = 2
+script = ExtResource("2_am8jv")
+PLAYER = NodePath("../Player")
+ITEM_TILEMAP = NodePath("../Item_Tilemap")
+
+[node name="Item_Tilemap" type="TileMap" parent="." node_paths=PackedStringArray("boardTilemap") groups=["items"]]
+texture_filter = 1
+tile_set = ExtResource("1_48wdh")
+format = 2
+script = ExtResource("3_s163v")
+boardTilemap = NodePath("../Board_Tilemap")
+
+[node name="Player" parent="." instance=ExtResource("3_6ywuo")]
+collision_mask = 15
+
+[node name="Debug" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextEdit" type="TextEdit" parent="Debug"]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 532.0
+offset_bottom = 308.0
+theme_override_colors/background_color = Color(0, 0, 0, 0)
+theme_override_fonts/font = SubResource("SystemFont_aqc1x")
+theme_override_font_sizes/font_size = 24
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TimerLabel" type="Label" parent="UI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.5
+offset_top = 48.0
+offset_right = 72.5
+offset_bottom = 109.0
+grow_horizontal = 2
+pivot_offset = Vector2(72, 30)
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 48
+text = "TIMER"
+horizontal_alignment = 1
+
+[node name="InstantEffect" type="Label" parent="UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EffectLabel" type="Label" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -170.0
+offset_top = 54.0
+offset_right = -56.0
+offset_bottom = 96.0
+grow_horizontal = 0
+theme = ExtResource("7_vbg7s")
+theme_override_colors/font_shadow_color = Color(0.188235, 0.188235, 0.188235, 1)
+theme_override_font_sizes/font_size = 40
+text = "EFFECT"
+
+[node name="Effect" type="Label" parent="UI/EffectLabel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -140.0
+offset_top = 61.0
+offset_bottom = 160.0
+grow_horizontal = 0
+pivot_offset = Vector2(140, 0)
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 2
+
+[connection signal="finished_generating_chunk" from="Board_Tilemap" to="Item_Tilemap" method="place_item"]
+[connection signal="banana_peel_handler" from="Item_Tilemap" to="Item_Handler" method="banana_peel_handler"]
+[connection signal="bomb_handler" from="Item_Tilemap" to="Item_Handler" method="bomb_handler"]
+[connection signal="clock_handler" from="Item_Tilemap" to="Item_Handler" method="clock_handler"]
+[connection signal="noclip_handler" from="Item_Tilemap" to="Item_Handler" method="noclip_handler"]
+[connection signal="randomized_clock_handler" from="Item_Tilemap" to="Item_Handler" method="randomized_clock_hander"]
+[connection signal="speed_boost_handler" from="Item_Tilemap" to="Item_Handler" method="speed_boost_handler"]
+[connection signal="teleporter_handler" from="Item_Tilemap" to="Item_Handler" method="teleporter_handler"]
+[connection signal="trap_handler" from="Item_Tilemap" to="Item_Handler" method="trap_handler"]
+[connection signal="apply_item" from="Player" to="Item_Tilemap" method="apply_item"]

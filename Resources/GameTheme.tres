@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dparfnssefxjx"]
+
+[ext_resource type="FontFile" uid="uid://cvckkwx5vscjm" path="res://Resources/Fonts/MesloLGS NF Regular.ttf" id="1_4siqr"]
+
+[resource]
+default_font = ExtResource("1_4siqr")
+Label/colors/font_shadow_color = Color(0.188235, 0.188235, 0.188235, 1)
+Label/constants/shadow_offset_x = 2
+Label/constants/shadow_offset_y = 2
+Label/constants/shadow_outline_size = 8
