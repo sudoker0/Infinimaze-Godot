@@ -1,50 +1,66 @@
-[gd_scene load_steps=10 format=3 uid="uid://c5dy7lcsxhgj0"]
+[gd_scene load_steps=16 format=3 uid="uid://c5dy7lcsxhgj0"]
 
 [ext_resource type="Script" path="res://Script/Main.gd" id="1_2rirn"]
 [ext_resource type="Script" path="res://Script/Item_Handler.gd" id="1_3ui0b"]
 [ext_resource type="TileSet" uid="uid://d2oo4tjp82tyw" path="res://Resources/Board_TileSet.tres" id="1_48wdh"]
 [ext_resource type="Script" path="res://Script/Board_Tilemap.gd" id="2_am8jv"]
+[ext_resource type="Script" path="res://Script/ExportHelper.gd" id="2_pt1uq"]
 [ext_resource type="PackedScene" uid="uid://cfk0tgew6g812" path="res://Scene/Player.tscn" id="3_6ywuo"]
 [ext_resource type="Script" path="res://Script/Item_Tilemap.gd" id="3_s163v"]
 [ext_resource type="Theme" uid="uid://dparfnssefxjx" path="res://Resources/GameTheme.tres" id="7_vbg7s"]
 [ext_resource type="Material" uid="uid://c5aeaupabjoik" path="res://Resources/BlockBreakingParticle.tres" id="8_c3k1f"]
+[ext_resource type="Shader" path="res://Resources/Shaders/CRT.gdshader" id="9_ykpnu"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Vignette.gdshader" id="10_yviwj"]
+[ext_resource type="AudioStream" uid="uid://bg55mw6yhrdrx" path="res://Resources/Audio/background_music.wav" id="11_xkaa5"]
 
 [sub_resource type="SystemFont" id="SystemFont_aqc1x"]
 font_names = PackedStringArray("MesloLGS NF")
+subpixel_positioning = 0
 
-[node name="root" type="Node2D" node_paths=PackedStringArray("TIMER_LABEL", "EFFECT_LABEL", "INSTANT_EFFECT_LABEL", "TIMER_PROGRESS_BAR", "SCORE_TIME_LABEL")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6gt5"]
+shader = ExtResource("9_ykpnu")
+shader_parameter/scanline_count = 200.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r40kd"]
+shader = ExtResource("10_yviwj")
+shader_parameter/vignette_intensity = 0.8
+shader_parameter/vignette_opacity = 0.75
+shader_parameter/vignette_rgb = Color(0, 0, 0, 1)
+
+[node name="root" type="Node2D"]
 script = ExtResource("1_2rirn")
-TIMER_LABEL = NodePath("UI/TimerProgressBar/TimerLabel")
-EFFECT_LABEL = NodePath("UI/EffectLabel/Effect")
-INSTANT_EFFECT_LABEL = NodePath("UI/InstantEffect")
-TIMER_PROGRESS_BAR = NodePath("UI/TimerProgressBar")
-SCORE_TIME_LABEL = NodePath("UI/ScoreTimeLabel")
 metadata/_edit_horizontal_guides_ = [32.0, 54.0]
 metadata/_edit_vertical_guides_ = [1096.0]
 
-[node name="Item_Handler" type="Node" parent="." node_paths=PackedStringArray("BOARD", "PLAYER", "TIMER_PROGRESS_BAR", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL")]
-script = ExtResource("1_3ui0b")
-BOARD = NodePath("../Board_Tilemap")
+[node name="GlobalHelper" type="Node" parent="." node_paths=PackedStringArray("ITEM_HANDLER", "BOARD_TILEMAP", "ITEM_TILEMAP", "PARTICLES", "PLAYER", "TIMER_PROGRESS_BAR", "TIMER_LABEL", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL", "SCORE_TIME_LABEL", "VIGNETTE_OVERLAY", "SOUND_EFFECT_HANDLER")]
+script = ExtResource("2_pt1uq")
+ITEM_HANDLER = NodePath("../ItemHandler")
+BOARD_TILEMAP = NodePath("../BoardTilemap")
+ITEM_TILEMAP = NodePath("../ItemTilemap")
+PARTICLES = NodePath("../Particles")
 PLAYER = NodePath("../Player")
 TIMER_PROGRESS_BAR = NodePath("../UI/TimerProgressBar")
+TIMER_LABEL = NodePath("../UI/TimerProgressBar/TimerLabel")
 INSTANT_EFFECT_LABEL = NodePath("../UI/InstantEffect")
 EFFECT_LABEL = NodePath("../UI/EffectLabel/Effect")
+SCORE_TIME_LABEL = NodePath("../UI/ScoreTimeLabel")
+VIGNETTE_OVERLAY = NodePath("../Shader/Vignette")
+SOUND_EFFECT_HANDLER = NodePath("../SoundEffectHandler")
 
-[node name="Board_Tilemap" type="TileMap" parent="." node_paths=PackedStringArray("PLAYER", "ITEM_TILEMAP")]
+[node name="ItemHandler" type="Node" parent="."]
+script = ExtResource("1_3ui0b")
+
+[node name="BoardTilemap" type="TileMap" parent="."]
 texture_filter = 1
 tile_set = ExtResource("1_48wdh")
 format = 2
 script = ExtResource("2_am8jv")
-PLAYER = NodePath("../Player")
-ITEM_TILEMAP = NodePath("../Item_Tilemap")
 
-[node name="Item_Tilemap" type="TileMap" parent="." node_paths=PackedStringArray("BOARD_TILEMAP", "PARTICLES") groups=["items"]]
+[node name="ItemTilemap" type="TileMap" parent="." groups=["items"]]
 texture_filter = 1
 tile_set = ExtResource("1_48wdh")
 format = 2
 script = ExtResource("3_s163v")
-BOARD_TILEMAP = NodePath("../Board_Tilemap")
-PARTICLES = NodePath("../Particles")
 
 [node name="Particles" type="GPUParticles2D" parent="."]
 emitting = false
@@ -87,9 +103,9 @@ middle_mouse_paste_enabled = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -174.0
+offset_left = -218.5
 offset_top = 120.0
-offset_right = 174.0
+offset_right = 218.5
 offset_bottom = 181.0
 grow_horizontal = 2
 pivot_offset = Vector2(72, 30)
@@ -179,13 +195,39 @@ theme_override_constants/shadow_outline_size = 0
 theme_override_font_sizes/font_size = 32
 text = "TIMR"
 
-[connection signal="finished_generating_chunk" from="Board_Tilemap" to="Item_Tilemap" method="place_item"]
-[connection signal="banana_peel_handler" from="Item_Tilemap" to="Item_Handler" method="banana_peel_handler"]
-[connection signal="bomb_handler" from="Item_Tilemap" to="Item_Handler" method="bomb_handler"]
-[connection signal="clock_handler" from="Item_Tilemap" to="Item_Handler" method="clock_handler"]
-[connection signal="noclip_handler" from="Item_Tilemap" to="Item_Handler" method="noclip_handler"]
-[connection signal="randomized_clock_handler" from="Item_Tilemap" to="Item_Handler" method="randomized_clock_hander"]
-[connection signal="speed_boost_handler" from="Item_Tilemap" to="Item_Handler" method="speed_boost_handler"]
-[connection signal="teleporter_handler" from="Item_Tilemap" to="Item_Handler" method="teleporter_handler"]
-[connection signal="trap_handler" from="Item_Tilemap" to="Item_Handler" method="trap_handler"]
-[connection signal="apply_item" from="Player" to="Item_Tilemap" method="apply_item"]
+[node name="Shader" type="CanvasLayer" parent="."]
+
+[node name="CRT" type="ColorRect" parent="Shader"]
+material = SubResource("ShaderMaterial_h6gt5")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Vignette" type="ColorRect" parent="Shader"]
+material = SubResource("ShaderMaterial_r40kd")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SoundEffectHandler" type="AudioStreamPlayer" parent="."]
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_xkaa5")
+volume_db = -10.0
+autoplay = true
+
+[connection signal="finished_generating_chunk" from="BoardTilemap" to="ItemTilemap" method="place_item"]
+[connection signal="banana_peel_handler" from="ItemTilemap" to="ItemHandler" method="banana_peel_handler"]
+[connection signal="bomb_handler" from="ItemTilemap" to="ItemHandler" method="bomb_handler"]
+[connection signal="clock_handler" from="ItemTilemap" to="ItemHandler" method="clock_handler"]
+[connection signal="darkness_handler" from="ItemTilemap" to="ItemHandler" method="darkness_handler"]
+[connection signal="noclip_handler" from="ItemTilemap" to="ItemHandler" method="noclip_handler"]
+[connection signal="randomized_clock_handler" from="ItemTilemap" to="ItemHandler" method="randomized_clock_hander"]
+[connection signal="speed_boost_handler" from="ItemTilemap" to="ItemHandler" method="speed_boost_handler"]
+[connection signal="teleporter_handler" from="ItemTilemap" to="ItemHandler" method="teleporter_handler"]
+[connection signal="trap_handler" from="ItemTilemap" to="ItemHandler" method="trap_handler"]
+[connection signal="apply_item" from="Player" to="ItemTilemap" method="apply_item"]

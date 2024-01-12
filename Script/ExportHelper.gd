@@ -1,0 +1,30 @@
+extends Node
+
+@export var ITEM_HANDLER: Node
+@export var BOARD_TILEMAP: TileMap
+@export var ITEM_TILEMAP: TileMap
+@export var PARTICLES: GPUParticles2D
+@export var PLAYER: CharacterBody2D
+
+@export var TIMER_PROGRESS_BAR: ProgressBar
+@export var TIMER_LABEL: Label
+@export var INSTANT_EFFECT_LABEL: Label
+@export var EFFECT_LABEL: Label
+@export var SCORE_TIME_LABEL: Label
+
+@export var VIGNETTE_OVERLAY: ColorRect
+@export var SOUND_EFFECT_HANDLER: AudioStreamPlayer
+
+func _ready():
+	Global.ITEM_HANDLER = ITEM_HANDLER
+	Global.BOARD_TILEMAP = BOARD_TILEMAP
+	Global.ITEM_TILEMAP = ITEM_TILEMAP
+	Global.PARTICLES = PARTICLES
+	Global.PLAYER = PLAYER
+	Global.TIMER_PROGRESS_BAR = TIMER_PROGRESS_BAR
+	Global.TIMER_LABEL = TIMER_LABEL
+	Global.INSTANT_EFFECT_LABEL = INSTANT_EFFECT_LABEL
+	Global.EFFECT_LABEL = EFFECT_LABEL
+	Global.SCORE_TIME_LABEL = SCORE_TIME_LABEL
+	Global.VIGNETTE_OVERLAY = VIGNETTE_OVERLAY
+	Global.SOUND_EFFECT_HANDLER = SOUND_EFFECT_HANDLER

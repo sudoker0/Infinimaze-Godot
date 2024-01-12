@@ -1,22 +1,15 @@
 extends CharacterBody2D
-
 signal apply_item(location: Vector2i)
 
-#var MAX_SPEED = 1500
-#var ACCELERATION = 10000
-#var FRICTION = 400
+@export var CAMERA: Camera2D
 
 var MAX_SPEED = 1000
 var ACCELERATION = 5000
 var FRICTION = 5000
 var FREEZE = false
 var CAMERA_ZOOM = Vector2(4, 4)
-var MIN_CAMERA_ZOOM = Vector2(0.5, 0.5)
+var MIN_CAMERA_ZOOM = Vector2(1.5, 1.5)
 var MAX_CAMERA_ZOOM = Vector2(4, 4)
-
-#var MAX_SPEED = 400
-#var ACCELERATION = 1000
-#var FRICTION = 600
 
 func get_input():
 	var input = Vector2.ZERO
@@ -44,10 +37,10 @@ func _ready():
 
 func _process(delta):
 	if Input.is_action_just_pressed("scroll_down"):
-		$Camera.zoom += CAMERA_ZOOM * -1 * delta
+		CAMERA.zoom += CAMERA_ZOOM * -1 * delta
 	elif Input.is_action_just_pressed("scroll_up"):
-		$Camera.zoom += CAMERA_ZOOM * delta
-	$Camera.zoom = clamp($Camera.zoom, MIN_CAMERA_ZOOM, MAX_CAMERA_ZOOM)
+		CAMERA.zoom += CAMERA_ZOOM * delta
+	CAMERA.zoom = clamp(CAMERA.zoom, MIN_CAMERA_ZOOM, MAX_CAMERA_ZOOM)
 
 func _physics_process(delta):
 	var factor = 1

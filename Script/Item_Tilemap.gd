@@ -8,9 +8,7 @@ signal teleporter_handler
 signal trap_handler
 signal bomb_handler
 signal banana_peel_handler
-
-@export var BOARD_TILEMAP: TileMap
-@export var PARTICLES: GPUParticles2D
+signal darkness_handler
 
 var rng = RandomNumberGenerator.new()
 var ITEM_METADATA = {
@@ -24,7 +22,7 @@ var ITEM_METADATA = {
 		"type": Global.ITEMS.RANDOMIZED_CLOCK,
 		"effect_function": "randomized_clock_handler",
 		"chance": 0.0025,
-		"score": 200,
+		"score": 250,
 	},
 	Vector2i(2, 1): {
 		"type": Global.ITEMS.SPEED_BOOST,
@@ -61,6 +59,12 @@ var ITEM_METADATA = {
 		"chance": 0.0005,
 		"score": 100,
 	},
+	Vector2i(0, 2): {
+		"type": Global.ITEMS.DARKNESS,
+		"effect_function": "darkness_handler",
+		"chance": 0.00054,
+		"score": 150,
+	}
 }
 
 # item (second row of texture):
@@ -72,7 +76,7 @@ var ITEM_METADATA = {
 # 5: trap
 # 6: bomb
 # 7: Banana peel
-func place_item(chunkCoord = Vector2(0, 0)):
+func place_item(chunkCoord = Vector2i(0, 0)):
 	var startPos = chunkCoord * Global.CONSTANT.chunk_size
 	var width = Global.CONSTANT.chunk_size
 	var height = Global.CONSTANT.chunk_size
@@ -80,7 +84,10 @@ func place_item(chunkCoord = Vector2(0, 0)):
 
 	for i in range(startPos.x, startPos.x + width):
 		for j in range(startPos.y, startPos.y + height):
-			if BOARD_TILEMAP.get_cell_atlas_coords(0, Vector2i(i, j)) != Global.BOARD_BLOCK.PATH:
+			if i == 0 and j ==0:
+				continue
+			if Global.BOARD_TILEMAP\
+				.get_cell_atlas_coords(0, Vector2i(i, j)) != Global.BOARD_BLOCK.PATH:
 				continue
 			var dice = rng.randf_range(0, 1)
 			var totalChance = 0
@@ -94,9 +101,9 @@ func place_item(chunkCoord = Vector2(0, 0)):
 					totalChance += chance
 
 func apply_item(location):
-	PARTICLES.position = (location * Global.CONSTANT.block_size)\
+	Global.PARTICLES.position = (location * Global.CONSTANT.block_size)\
 		+ Global.CONSTANT.block_size * Vector2i(1, 1) / 2
-	PARTICLES.emitting = true
+	Global.PARTICLES.emitting = true
 
 	var itemAtlasCoords = get_cell_atlas_coords(0, location)
 	var item = ITEM_METADATA.get(itemAtlasCoords)
@@ -106,3 +113,6 @@ func apply_item(location):
 
 	Global.currentGameState.score += item.score
 	emit_signal(item.effect_function)
+
+	Global.SOUND_EFFECT_HANDLER.stream = preload(Global.SOUND_EFFECT.pickup)
+	Global.SOUND_EFFECT_HANDLER.play()

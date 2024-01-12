@@ -1,9 +1,4 @@
 extends Node2D
-@export var TIMER_LABEL: Label
-@export var EFFECT_LABEL: Label
-@export var INSTANT_EFFECT_LABEL: Label
-@export var TIMER_PROGRESS_BAR: ProgressBar
-@export var SCORE_TIME_LABEL: Label
 
 var startTime = 0
 
@@ -23,16 +18,17 @@ func _ready():
 func center_pivot(node):
 	node.pivot_offset = node.size / 2
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Called every frame. 'delta' is the elapsedtime since the previous frame.
 func _process(_delta):
-	center_pivot(TIMER_LABEL)
-	center_pivot(TIMER_PROGRESS_BAR)
-	center_pivot(INSTANT_EFFECT_LABEL)
-	EFFECT_LABEL.pivot_offset = Vector2(EFFECT_LABEL.size.x, 0)
+	center_pivot(Global.TIMER_LABEL)
+	center_pivot(Global.TIMER_PROGRESS_BAR)
+	center_pivot(Global.INSTANT_EFFECT_LABEL)
+	center_pivot(Global.SCORE_TIME_LABEL)
+	Global.EFFECT_LABEL.pivot_offset = Vector2(Global.EFFECT_LABEL.size.x, 0)
 
 	var deltaTime = float(Global.currentGameState.endTime - Time.get_ticks_msec())
 	var elapsed = int((Time.get_ticks_msec() - startTime) / 1000)
-	TIMER_LABEL.text = str(Global.TEXT.timer_text % (deltaTime / 1000))
-	TIMER_PROGRESS_BAR.value = deltaTime / 1000
+	Global.TIMER_LABEL.text = str(Global.TEXT.timer_text % (deltaTime / 1000))
+	Global.TIMER_PROGRESS_BAR.value = deltaTime / 1000
 
-	SCORE_TIME_LABEL.text = Global.TEXT.score_time_text % [Global.currentGameState.score, elapsed]
+	Global.SCORE_TIME_LABEL.text = Global.TEXT.score_time_text % [Global.currentGameState.score, elapsed]

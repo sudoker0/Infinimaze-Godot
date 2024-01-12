@@ -1,10 +1,28 @@
 extends TileMap
-signal finished_generating_chunk(chunkCoord: Vector2)
-@export var PLAYER: CharacterBody2D
-@export var ITEM_TILEMAP: TileMap
+signal finished_generating_chunk(chunkCoord: Vector2i)
 
 var rng = RandomNumberGenerator.new()
 var generatedChunk = []
+
+var chunkPath = Global.CONSTANT.chunk_filepath
+var chunkSize = Global.CONSTANT.chunk_size
+
+func saveChunk(chunkCoord: Vector2i):
+	var startPos = chunkCoord * chunkSize
+	var width = chunkSize
+	var height = chunkSize
+	var file = FileAccess.open(chunkPath % [chunkCoord.x, chunkCoord.y], FileAccess.WRITE)
+
+	for i in range(startPos.x, startPos.x + width):
+		for j in range(startPos.y, startPos.y + height):
+			var cell = get_cell_atlas_coords(0, Vector2i(i, j))
+			if cell:
+				file.store_var(cell)
+
+	file.close()
+
+func loadChunk(chunkCoord: Vector2i):
+	pass
 
 func arrayDifference(arr1, arr2):
 	var only_in_arr1 = []
@@ -13,22 +31,22 @@ func arrayDifference(arr1, arr2):
 			only_in_arr1.append(v)
 	return only_in_arr1
 
-func generateMaze(chunkCoord = Vector2(0, 0)):
+func generateMaze(chunkCoord = Vector2i(0, 0)):
 	#rng.seed = 1252
 	rng.randomize()
-	var width = Global.CONSTANT.chunk_size
-	var height = Global.CONSTANT.chunk_size
-	var startPos = chunkCoord * Global.CONSTANT.chunk_size
+	var width = chunkSize
+	var height = chunkSize
+	var startPos = chunkCoord * chunkSize
 	var currentCell = startPos
 
 	var board = self
 	var visitedList = {}
 	var stack = []
 	var neighbors = [
-		Vector2(2, 0),
-		Vector2(-2, 0),
-		Vector2(0, 2),
-		Vector2(0, -2),
+		Vector2i(2, 0),
+		Vector2i(-2, 0),
+		Vector2i(0, 2),
+		Vector2i(0, -2),
 	]
 
 	for i in range(startPos.x, startPos.x + width):
@@ -38,8 +56,8 @@ func generateMaze(chunkCoord = Vector2(0, 0)):
 				type = Global.BOARD_BLOCK.PATH
 			else:
 				type = Global.BOARD_BLOCK.WALL
-			board.set_cell(0, Vector2(i, j), 0, type)
-			visitedList[Vector2(i, j)] = false
+			board.set_cell(0, Vector2i(i, j), 0, type)
+			visitedList[Vector2i(i, j)] = false
 
 	visitedList[currentCell] = true
 	stack.append(currentCell)
@@ -67,35 +85,35 @@ func generateMaze(chunkCoord = Vector2(0, 0)):
 	# chunk blending
 	var edgeCases = [
 		{ # left
-			"offset": Vector2(-1, 0),
+			"offset": Vector2i(-1, 0),
 			"orientation": "y",
 		},
 		{ # right
-			"offset": Vector2(Global.CONSTANT.chunk_size - 1, 0),
+			"offset": Vector2i(chunkSize - 1, 0),
 			"orientation": "y",
 		},
 		{ # top
-			"offset": Vector2(0, -1),
+			"offset": Vector2i(0, -1),
 			"orientation": "x",
 		},
 		{ # bottom
-			"offset": Vector2(0, Global.CONSTANT.chunk_size - 1),
+			"offset": Vector2i(0, chunkSize - 1),
 			"orientation": "x",
 		},
 	]
 
 	for e in edgeCases:
 		currentCell = startPos + e.offset
-		for i in range(0, Global.CONSTANT.chunk_size):
+		for i in range(0, chunkSize):
 			var leftCellPos
 			var rightCellPos
 			match e.orientation:
 				"y":
-					leftCellPos = Vector2(-1, i)
-					rightCellPos = Vector2(1, i)
+					leftCellPos = Vector2i(-1, i)
+					rightCellPos = Vector2i(1, i)
 				"x":
-					leftCellPos = Vector2(i, -1)
-					rightCellPos = Vector2(i, 1)
+					leftCellPos = Vector2i(i, -1)
+					rightCellPos = Vector2i(i, 1)
 			var leftCell = board.get_cell_atlas_coords(0,
 				currentCell + leftCellPos)
 			var rightCell = board.get_cell_atlas_coords(0,
@@ -115,18 +133,18 @@ func generateMaze(chunkCoord = Vector2(0, 0)):
 
 	emit_signal("finished_generating_chunk", chunkCoord)
 
-func removeMaze(chunkCoord):
-	var startPos = chunkCoord * Global.CONSTANT.chunk_size
-	var width = Global.CONSTANT.chunk_size
-	var height = Global.CONSTANT.chunk_size
+func removeMaze(chunkCoord: Vector2i):
+	var startPos = chunkCoord * chunkSize
+	var width = chunkSize
+	var height = chunkSize
 	var board = self
 
 	for i in range(startPos.x, startPos.x + width):
 		for j in range(startPos.y, startPos.y + height):
-			board.set_cell(0, Vector2(i, j), 0, Vector2i(-1, -1))
-			ITEM_TILEMAP.set_cell(0, Vector2(i, j), 0, Vector2i(-1, -1))
+			board.set_cell(0, Vector2i(i, j), 0, Vector2i(-1, -1))
+			Global.ITEM_TILEMAP.set_cell(0, Vector2i(i, j), 0, Vector2i(-1, -1))
 
-func generateChunkMaze(origin: Vector2):
+func generateChunkMaze(origin: Vector2i):
 	var newChunk = []
 	var a = origin.x - Global.CONSTANT.render_distance - 1
 	var b = origin.x + Global.CONSTANT.render_distance + 1
@@ -134,7 +152,7 @@ func generateChunkMaze(origin: Vector2):
 	var d = origin.y + Global.CONSTANT.render_distance + 1
 	for x in range(a, b):
 		for y in range(c, d):
-			newChunk.append(Vector2(x, y))
+			newChunk.append(Vector2i(x, y))
 
 	var addedChunk = arrayDifference(newChunk, generatedChunk)
 	var removedChunk = arrayDifference(generatedChunk, newChunk)
@@ -147,10 +165,9 @@ func generateChunkMaze(origin: Vector2):
 		generatedChunk.erase(i)
 
 func _ready():
-	generateChunkMaze(Vector2(0, 0))
 	pass
 
 func _process(_delta):
 	generateChunkMaze(
-		floor(PLAYER.position / Global.CONSTANT.block_size / Global.CONSTANT.chunk_size)
+		floor(Global.PLAYER.position / Global.CONSTANT.block_size / chunkSize)
 	)

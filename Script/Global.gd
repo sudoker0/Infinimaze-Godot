@@ -1,5 +1,20 @@
 extends Node
 
+var ITEM_HANDLER: Node
+var BOARD_TILEMAP: TileMap
+var ITEM_TILEMAP: TileMap
+var PARTICLES: GPUParticles2D
+var PLAYER: CharacterBody2D
+
+var TIMER_PROGRESS_BAR: ProgressBar
+var TIMER_LABEL: Label
+var INSTANT_EFFECT_LABEL: Label
+var EFFECT_LABEL: Label
+var SCORE_TIME_LABEL: Label
+
+var VIGNETTE_OVERLAY: ColorRect
+var SOUND_EFFECT_HANDLER: AudioStreamPlayer
+
 enum Difficulty {
 	EASY,
 	MEDIUM,
@@ -25,6 +40,9 @@ const ITEM_STAT = {
 		"bomb_wait_time": 5,
 		"banana_peel_friction": 500,
 		"banana_peel_time": 10,
+		"darkness_min_time": 5,
+		"darkness_max_time": 10,
+		"darkness_intensity": 8,
 	},
 	Difficulty.MEDIUM: {
 		"min_clock_time": 2.5,
@@ -44,6 +62,9 @@ const ITEM_STAT = {
 		"bomb_wait_time": 4,
 		"banana_peel_friction": 100,
 		"banana_peel_time": 20,
+		"darkness_min_time": 10,
+		"darkness_max_time": 20,
+		"darkness_intensity": 8,
 	},
 	Difficulty.HARD: {
 		"min_clock_time": 2,
@@ -63,6 +84,9 @@ const ITEM_STAT = {
 		"bomb_wait_time": 0,
 		"banana_peel_friction": 0,
 		"banana_peel_time": 15,
+		"darkness_min_time": 15,
+		"darkness_max_time": 30,
+		"darkness_intensity": 8,
 	}
 }
 
@@ -79,22 +103,29 @@ enum ITEMS {
 	TELEPORTER,
 	TRAP,
 	BOMB,
-	BANANA_PEEL
+	BANANA_PEEL,
+	DARKNESS
 }
 
 enum EFFECTS {
 	SPEED_BOOST,
 	NOCLIP,
 	TRAP,
-	BANANA_PEEL
+	BANANA_PEEL,
+	DARKNESS
 }
 
 const CONSTANT = {
 	"chunk_size": 32,
 	"block_size": 32,
-	"render_distance": 2,
+	"render_distance": 1,
 	"max_time": 100,
 	"crouching_speed_factor": 0.2,
+	"chunk_filepath": "user://chunk-x%sy%s.data"
+}
+
+const SOUND_EFFECT = {
+	"pickup": "res://Resources/Audio/pickup.wav"
 }
 
 var currentGameState = {
@@ -109,6 +140,8 @@ const TEXT = {
 	"score_time_text": "SCORE: %s | ELAPSED: %ss"
 }
 
-var Config = {
-	
+var CONFIG = {
+	"sound_effect_volume": 100,
+	"background_volume": 100,
+	"debug": false,
 }
