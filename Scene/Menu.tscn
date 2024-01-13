@@ -1,0 +1,89 @@
+[gd_scene load_steps=5 format=3 uid="uid://bww00bhfmlcbm"]
+
+[ext_resource type="PackedScene" uid="uid://cql1l41b2mqps" path="res://Scene/Shader.tscn" id="1_2vqmy"]
+[ext_resource type="Script" path="res://Script/Menu/Menu.gd" id="1_in236"]
+[ext_resource type="Texture2D" uid="uid://dnaom2gk3ys1n" path="res://Resources/Image/LogoText.png" id="1_nt1w4"]
+[ext_resource type="Texture2D" uid="uid://b24fd3t5pj763" path="res://Resources/Image/Background.png" id="2_w7l53"]
+
+[node name="Menu" type="Node2D" node_paths=PackedStringArray("MAZE_TEXTURE")]
+script = ExtResource("1_in236")
+MAZE_TEXTURE = NodePath("CanvasLayer/MazeTexture")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MazeTexture" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2160.0
+offset_top = -1620.0
+offset_right = 2160.0
+offset_bottom = 1620.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_w7l53")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.470588)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VSplitContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+texture_filter = 3
+custom_minimum_size = Vector2(700, 150)
+layout_mode = 2
+texture = ExtResource("1_nt1w4")
+stretch_mode = 5
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 54
+text = "PLAY"
+
+[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="OptionButton" type="Button" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 54
+text = "OPTIONS"
+
+[node name="HSeparator3" type="HSeparator" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="AboutButton" type="Button" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 54
+text = "ABOUT"
+
+[node name="HSeparator4" type="HSeparator" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="ExitButton" type="Button" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 54
+text = "EXIT"
+
+[node name="Shader" parent="." instance=ExtResource("1_2vqmy")]
+
+[connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/PlayButton" to="." method="button_play"]
+[connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/OptionButton" to="." method="button_option"]
+[connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/AboutButton" to="." method="button_about"]
+[connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/ExitButton" to="." method="button_exit"]

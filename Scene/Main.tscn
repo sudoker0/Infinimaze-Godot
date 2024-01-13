@@ -1,38 +1,35 @@
 [gd_scene load_steps=16 format=3 uid="uid://c5dy7lcsxhgj0"]
 
-[ext_resource type="Script" path="res://Script/Main.gd" id="1_2rirn"]
-[ext_resource type="Script" path="res://Script/Item_Handler.gd" id="1_3ui0b"]
+[ext_resource type="Script" path="res://Script/Main/Main.gd" id="1_2rirn"]
+[ext_resource type="Script" path="res://Script/Main/Item_Handler.gd" id="1_3ui0b"]
 [ext_resource type="TileSet" uid="uid://d2oo4tjp82tyw" path="res://Resources/Board_TileSet.tres" id="1_48wdh"]
-[ext_resource type="Script" path="res://Script/Board_Tilemap.gd" id="2_am8jv"]
-[ext_resource type="Script" path="res://Script/ExportHelper.gd" id="2_pt1uq"]
+[ext_resource type="Script" path="res://Script/Main/Board_Tilemap.gd" id="2_am8jv"]
+[ext_resource type="Script" path="res://Script/Main/ExportHelper.gd" id="2_pt1uq"]
+[ext_resource type="AudioStream" uid="uid://c4ny3f57my72h" path="res://Resources/Audio/die.wav" id="3_2uvxc"]
 [ext_resource type="PackedScene" uid="uid://cfk0tgew6g812" path="res://Scene/Player.tscn" id="3_6ywuo"]
-[ext_resource type="Script" path="res://Script/Item_Tilemap.gd" id="3_s163v"]
+[ext_resource type="Script" path="res://Script/Main/Item_Tilemap.gd" id="3_s163v"]
+[ext_resource type="AudioStream" uid="uid://c1mwcnspkh3k2" path="res://Resources/Audio/pickup.wav" id="4_ocy1m"]
 [ext_resource type="Theme" uid="uid://dparfnssefxjx" path="res://Resources/GameTheme.tres" id="7_vbg7s"]
 [ext_resource type="Material" uid="uid://c5aeaupabjoik" path="res://Resources/BlockBreakingParticle.tres" id="8_c3k1f"]
-[ext_resource type="Shader" path="res://Resources/Shaders/CRT.gdshader" id="9_ykpnu"]
 [ext_resource type="Shader" path="res://Resources/Shaders/Vignette.gdshader" id="10_yviwj"]
-[ext_resource type="AudioStream" uid="uid://bg55mw6yhrdrx" path="res://Resources/Audio/background_music.wav" id="11_xkaa5"]
+[ext_resource type="PackedScene" uid="uid://cql1l41b2mqps" path="res://Scene/Shader.tscn" id="12_ei6ik"]
 
 [sub_resource type="SystemFont" id="SystemFont_aqc1x"]
 font_names = PackedStringArray("MesloLGS NF")
 subpixel_positioning = 0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6gt5"]
-shader = ExtResource("9_ykpnu")
-shader_parameter/scanline_count = 200.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r40kd"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i5nwm"]
 shader = ExtResource("10_yviwj")
-shader_parameter/vignette_intensity = 0.8
+shader_parameter/vignette_intensity = 8.0
 shader_parameter/vignette_opacity = 0.75
 shader_parameter/vignette_rgb = Color(0, 0, 0, 1)
 
-[node name="root" type="Node2D"]
+[node name="Main" type="Node2D"]
 script = ExtResource("1_2rirn")
 metadata/_edit_horizontal_guides_ = [32.0, 54.0]
 metadata/_edit_vertical_guides_ = [1096.0]
 
-[node name="GlobalHelper" type="Node" parent="." node_paths=PackedStringArray("ITEM_HANDLER", "BOARD_TILEMAP", "ITEM_TILEMAP", "PARTICLES", "PLAYER", "TIMER_PROGRESS_BAR", "TIMER_LABEL", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL", "SCORE_TIME_LABEL", "VIGNETTE_OVERLAY", "SOUND_EFFECT_HANDLER")]
+[node name="GlobalHelper" type="Node" parent="." node_paths=PackedStringArray("ITEM_HANDLER", "BOARD_TILEMAP", "ITEM_TILEMAP", "PARTICLES", "PLAYER", "TIMER_PROGRESS_BAR", "TIMER_LABEL", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL", "SCORE_TIME_LABEL", "DARKNESS_OVERLAY", "SOUND_EFFECT_HANDLER", "GAME_OVER_CONTAINER", "GAME_OVER_STAT_LABEL")]
 script = ExtResource("2_pt1uq")
 ITEM_HANDLER = NodePath("../ItemHandler")
 BOARD_TILEMAP = NodePath("../BoardTilemap")
@@ -44,8 +41,12 @@ TIMER_LABEL = NodePath("../UI/TimerProgressBar/TimerLabel")
 INSTANT_EFFECT_LABEL = NodePath("../UI/InstantEffect")
 EFFECT_LABEL = NodePath("../UI/EffectLabel/Effect")
 SCORE_TIME_LABEL = NodePath("../UI/ScoreTimeLabel")
-VIGNETTE_OVERLAY = NodePath("../Shader/Vignette")
+DARKNESS_OVERLAY = NodePath("../EffectOverlay/Darkness")
 SOUND_EFFECT_HANDLER = NodePath("../SoundEffectHandler")
+GAME_OVER_CONTAINER = NodePath("../GameOver/CenterContainer")
+GAME_OVER_STAT_LABEL = NodePath("../GameOver/CenterContainer/VBoxContainer/GameOverStatLabel")
+DIE_SOUND_EFFECT = ExtResource("3_2uvxc")
+PICKUP_SOUND_EFFECT = ExtResource("4_ocy1m")
 
 [node name="ItemHandler" type="Node" parent="."]
 script = ExtResource("1_3ui0b")
@@ -195,31 +196,143 @@ theme_override_constants/shadow_outline_size = 0
 theme_override_font_sizes/font_size = 32
 text = "TIMR"
 
-[node name="Shader" type="CanvasLayer" parent="."]
+[node name="EffectOverlay" type="CanvasLayer" parent="."]
 
-[node name="CRT" type="ColorRect" parent="Shader"]
-material = SubResource("ShaderMaterial_h6gt5")
+[node name="Darkness" type="ColorRect" parent="EffectOverlay"]
+visible = false
+material = SubResource("ShaderMaterial_i5nwm")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="Vignette" type="ColorRect" parent="Shader"]
-material = SubResource("ShaderMaterial_r40kd")
+[node name="GameOver" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="GameOver"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ColorRect" type="ColorRect" parent="GameOver/CenterContainer"]
+custom_minimum_size = Vector2(800, 500)
+layout_mode = 2
+color = Color(0, 0, 0, 0.745098)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOver/CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="GameOver/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 64
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="GameOverStatLabel" type="Label" parent="GameOver/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 32
+text = "YOU SURVIVED FOR 69 SECONDS AND SCORED 800 POINTS"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="GameOver/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameOver/CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Restart" type="Button" parent="GameOver/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 36
+text = "RESTART"
+
+[node name="VSeparator" type="VSeparator" parent="GameOver/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="Menu" type="Button" parent="GameOver/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 36
+text = "MENU"
+
+[node name="Pause" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="Pause"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+
+[node name="ColorRect" type="ColorRect" parent="Pause/CenterContainer"]
+custom_minimum_size = Vector2(800, 500)
+layout_mode = 2
+color = Color(0, 0, 0, 0.745098)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Pause/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Pause/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Pause/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Pause/CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Restart" type="Button" parent="Pause/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 36
+text = "RESUME"
+
+[node name="VSeparator" type="VSeparator" parent="Pause/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="Menu" type="Button" parent="Pause/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme = ExtResource("7_vbg7s")
+theme_override_font_sizes/font_size = 36
+text = "MENU"
+
+[node name="Shader" parent="." instance=ExtResource("12_ei6ik")]
 
 [node name="SoundEffectHandler" type="AudioStreamPlayer" parent="."]
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("11_xkaa5")
 volume_db = -10.0
-autoplay = true
 
+[connection signal="game_over_signal" from="." to="Player" method="game_over"]
+[connection signal="game_start_signal" from="." to="ItemHandler" method="reset"]
+[connection signal="game_start_signal" from="." to="BoardTilemap" method="reset"]
 [connection signal="finished_generating_chunk" from="BoardTilemap" to="ItemTilemap" method="place_item"]
 [connection signal="banana_peel_handler" from="ItemTilemap" to="ItemHandler" method="banana_peel_handler"]
 [connection signal="bomb_handler" from="ItemTilemap" to="ItemHandler" method="bomb_handler"]
@@ -231,3 +344,7 @@ autoplay = true
 [connection signal="teleporter_handler" from="ItemTilemap" to="ItemHandler" method="teleporter_handler"]
 [connection signal="trap_handler" from="ItemTilemap" to="ItemHandler" method="trap_handler"]
 [connection signal="apply_item" from="Player" to="ItemTilemap" method="apply_item"]
+[connection signal="button_up" from="GameOver/CenterContainer/VBoxContainer/HBoxContainer/Restart" to="." method="start_game"]
+[connection signal="button_up" from="GameOver/CenterContainer/VBoxContainer/HBoxContainer/Menu" to="." method="return_to_menu"]
+[connection signal="button_up" from="Pause/CenterContainer/VBoxContainer/HBoxContainer/Restart" to="." method="start_game"]
+[connection signal="button_up" from="Pause/CenterContainer/VBoxContainer/HBoxContainer/Menu" to="." method="return_to_menu"]

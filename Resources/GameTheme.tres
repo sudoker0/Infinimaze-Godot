@@ -1,6 +1,19 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dparfnssefxjx"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dparfnssefxjx"]
 
 [ext_resource type="FontFile" uid="uid://cvckkwx5vscjm" path="res://Resources/Fonts/MesloLGS NF Regular.ttf" id="1_4siqr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03tv3"]
+bg_color = Color(0.686275, 0.686275, 0.686275, 1)
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yrsus"]
+bg_color = Color(1, 1, 1, 1)
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7t1b"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vx7f3"]
 bg_color = Color(0, 0, 0, 1)
@@ -8,8 +21,17 @@ bg_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_op8mj"]
 bg_color = Color(0.196078, 0.447059, 0.494118, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wa0um"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [resource]
 default_font = ExtResource("1_4siqr")
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/styles/hover = SubResource("StyleBoxFlat_03tv3")
+Button/styles/normal = SubResource("StyleBoxFlat_yrsus")
+HSeparator/styles/separator = SubResource("StyleBoxFlat_k7t1b")
 Label/colors/font_shadow_color = Color(0.188235, 0.188235, 0.188235, 1)
 Label/constants/shadow_offset_x = 2
 Label/constants/shadow_offset_y = 2
@@ -19,3 +41,5 @@ ProgressBar/colors/font_outline_color = Color(1, 1, 1, 1)
 ProgressBar/constants/outline_size = 8
 ProgressBar/styles/background = SubResource("StyleBoxFlat_vx7f3")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_op8mj")
+VSeparator/constants/separation = 0
+VSeparator/styles/separator = SubResource("StyleBoxFlat_wa0um")

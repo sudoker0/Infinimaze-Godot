@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://cql1l41b2mqps"]
+
+[ext_resource type="Shader" path="res://Resources/Shaders/CRT.gdshader" id="1_asalw"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Vignette.gdshader" id="2_x0wu3"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Pixelate.gdshader" id="3_pwava"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6vhuu"]
+shader = ExtResource("1_asalw")
+shader_parameter/scanline_count = 200.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u2v1v"]
+shader = ExtResource("2_x0wu3")
+shader_parameter/vignette_intensity = 0.8
+shader_parameter/vignette_opacity = 0.75
+shader_parameter/vignette_rgb = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_07sa3"]
+shader = ExtResource("3_pwava")
+shader_parameter/time = 0.0
+shader_parameter/custom_resolution = Vector2(100, 100)
+
+[node name="Shader" type="CanvasLayer"]
+
+[node name="CRT" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_6vhuu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Vignette" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_u2v1v")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Pixelate" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_07sa3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true

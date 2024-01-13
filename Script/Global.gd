@@ -12,8 +12,14 @@ var INSTANT_EFFECT_LABEL: Label
 var EFFECT_LABEL: Label
 var SCORE_TIME_LABEL: Label
 
-var VIGNETTE_OVERLAY: ColorRect
+var DARKNESS_OVERLAY: ColorRect
 var SOUND_EFFECT_HANDLER: AudioStreamPlayer
+
+var GAME_OVER_CONTAINER: Control
+var GAME_OVER_STAT_LABEL: Label
+
+var DIE_SOUND_EFFECT: AudioStream
+var PICKUP_SOUND_EFFECT: AudioStream
 
 enum Difficulty {
 	EASY,
@@ -42,7 +48,7 @@ const ITEM_STAT = {
 		"banana_peel_time": 10,
 		"darkness_min_time": 5,
 		"darkness_max_time": 10,
-		"darkness_intensity": 8,
+		"darkness_intensity": 10,
 	},
 	Difficulty.MEDIUM: {
 		"min_clock_time": 2.5,
@@ -64,7 +70,7 @@ const ITEM_STAT = {
 		"banana_peel_time": 20,
 		"darkness_min_time": 10,
 		"darkness_max_time": 20,
-		"darkness_intensity": 8,
+		"darkness_intensity": 15,
 	},
 	Difficulty.HARD: {
 		"min_clock_time": 2,
@@ -86,7 +92,7 @@ const ITEM_STAT = {
 		"banana_peel_time": 15,
 		"darkness_min_time": 15,
 		"darkness_max_time": 30,
-		"darkness_intensity": 8,
+		"darkness_intensity": 20,
 	}
 }
 
@@ -121,14 +127,17 @@ const CONSTANT = {
 	"render_distance": 1,
 	"max_time": 100,
 	"crouching_speed_factor": 0.2,
+	"initial_time": 60,
 	"chunk_filepath": "user://chunk-x%sy%s.data"
 }
 
-const SOUND_EFFECT = {
-	"pickup": "res://Resources/Audio/pickup.wav"
+const SCENE = {
+	"main": "res://Scene/Main.tscn",
+	"menu": "res://Scene/Menu.tscn",
 }
 
 var currentGameState = {
+	"stopped": false,
 	"endTime": 0,
 	"score": 0,
 	"difficulty": Difficulty.MEDIUM
@@ -137,7 +146,8 @@ var currentGameState = {
 const TEXT = {
 	"timer_text": "TIME LEFT: %.2fs",
 	"teleported_text": "TELEPORTED!",
-	"score_time_text": "SCORE: %s | ELAPSED: %ss"
+	"score_time_text": "SCORE: %s | ELAPSED: %ss",
+	"game_over_stat_text": "YOU SURVIVED FOR %s SECONDS AND SCORED %s POINTS"
 }
 
 var CONFIG = {
