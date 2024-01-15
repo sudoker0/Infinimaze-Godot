@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bs81mq65es208"]
+
+[ext_resource type="Shader" path="res://Resources/Shaders/Static.gdshader" id="1_p1idy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qf0ev"]
+shader = ExtResource("1_p1idy")
+shader_parameter/amount = 40.0
+
+[node name="TVStatic" type="CanvasLayer"]
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Static" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_qf0ev")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

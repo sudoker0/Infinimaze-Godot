@@ -1,10 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://c5dy7lcsxhgj0"]
+[gd_scene load_steps=15 format=3 uid="uid://c5dy7lcsxhgj0"]
 
 [ext_resource type="Script" path="res://Script/Main/Main.gd" id="1_2rirn"]
 [ext_resource type="Script" path="res://Script/Main/Item_Handler.gd" id="1_3ui0b"]
 [ext_resource type="TileSet" uid="uid://d2oo4tjp82tyw" path="res://Resources/Board_TileSet.tres" id="1_48wdh"]
 [ext_resource type="Script" path="res://Script/Main/Board_Tilemap.gd" id="2_am8jv"]
-[ext_resource type="Script" path="res://Script/Main/ExportHelper.gd" id="2_pt1uq"]
 [ext_resource type="AudioStream" uid="uid://c4ny3f57my72h" path="res://Resources/Audio/die.wav" id="3_2uvxc"]
 [ext_resource type="PackedScene" uid="uid://cfk0tgew6g812" path="res://Scene/Player.tscn" id="3_6ywuo"]
 [ext_resource type="Script" path="res://Script/Main/Item_Tilemap.gd" id="3_s163v"]
@@ -13,10 +12,7 @@
 [ext_resource type="Material" uid="uid://c5aeaupabjoik" path="res://Resources/BlockBreakingParticle.tres" id="8_c3k1f"]
 [ext_resource type="Shader" path="res://Resources/Shaders/Vignette.gdshader" id="10_yviwj"]
 [ext_resource type="PackedScene" uid="uid://cql1l41b2mqps" path="res://Scene/Shader.tscn" id="12_ei6ik"]
-
-[sub_resource type="SystemFont" id="SystemFont_aqc1x"]
-font_names = PackedStringArray("MesloLGS NF")
-subpixel_positioning = 0
+[ext_resource type="Script" path="res://Script/Main/Pause.gd" id="13_j5kvh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i5nwm"]
 shader = ExtResource("10_yviwj")
@@ -24,44 +20,54 @@ shader_parameter/vignette_intensity = 8.0
 shader_parameter/vignette_opacity = 0.75
 shader_parameter/vignette_rgb = Color(0, 0, 0, 1)
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("PARTICLES", "PLAYER", "TIMER_PROGRESS_BAR", "TIMER_LABEL", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL", "SCORE_TIME_LABEL", "SOUND_EFFECT_HANDLER", "GAME_OVER_CONTAINER", "GAME_OVER_STAT_LABEL", "PAUSE_CONTAINER", "DEBUG_CONTAINER", "DEBUG_TEXT")]
 script = ExtResource("1_2rirn")
+PARTICLES = NodePath("Particles")
+PLAYER = NodePath("Player")
+TIMER_PROGRESS_BAR = NodePath("UI/TimerProgressBar")
+TIMER_LABEL = NodePath("UI/TimerProgressBar/TimerLabel")
+INSTANT_EFFECT_LABEL = NodePath("UI/InstantEffect")
+EFFECT_LABEL = NodePath("UI/EffectText/EffectLabel")
+SCORE_TIME_LABEL = NodePath("UI/ScoreTimeLabel")
+SOUND_EFFECT_HANDLER = NodePath("SoundEffectHandler")
+GAME_OVER_CONTAINER = NodePath("GameOver/CenterContainer")
+GAME_OVER_STAT_LABEL = NodePath("GameOver/CenterContainer/VBoxContainer/GameOverStatLabel")
+PAUSE_CONTAINER = NodePath("Pause/CenterContainer")
+DIE_SOUND_EFFECT = ExtResource("3_2uvxc")
+PICKUP_SOUND_EFFECT = ExtResource("4_ocy1m")
+DEBUG_CONTAINER = NodePath("Debug/ColorRect")
+DEBUG_TEXT = NodePath("Debug/ColorRect/MarginContainer/DebugText")
 metadata/_edit_horizontal_guides_ = [32.0, 54.0]
 metadata/_edit_vertical_guides_ = [1096.0]
 
-[node name="GlobalHelper" type="Node" parent="." node_paths=PackedStringArray("ITEM_HANDLER", "BOARD_TILEMAP", "ITEM_TILEMAP", "PARTICLES", "PLAYER", "TIMER_PROGRESS_BAR", "TIMER_LABEL", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL", "SCORE_TIME_LABEL", "DARKNESS_OVERLAY", "SOUND_EFFECT_HANDLER", "GAME_OVER_CONTAINER", "GAME_OVER_STAT_LABEL")]
-script = ExtResource("2_pt1uq")
-ITEM_HANDLER = NodePath("../ItemHandler")
+[node name="ItemHandler" type="Node" parent="." node_paths=PackedStringArray("BOARD_TILEMAP", "PLAYER", "TIMER_PROGRESS_BAR", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL", "SCORE_TIME_LABEL", "DARKNESS_OVERLAY")]
+script = ExtResource("1_3ui0b")
 BOARD_TILEMAP = NodePath("../BoardTilemap")
-ITEM_TILEMAP = NodePath("../ItemTilemap")
-PARTICLES = NodePath("../Particles")
 PLAYER = NodePath("../Player")
 TIMER_PROGRESS_BAR = NodePath("../UI/TimerProgressBar")
-TIMER_LABEL = NodePath("../UI/TimerProgressBar/TimerLabel")
 INSTANT_EFFECT_LABEL = NodePath("../UI/InstantEffect")
-EFFECT_LABEL = NodePath("../UI/EffectLabel/Effect")
+EFFECT_LABEL = NodePath("../UI/EffectText/EffectLabel")
 SCORE_TIME_LABEL = NodePath("../UI/ScoreTimeLabel")
 DARKNESS_OVERLAY = NodePath("../EffectOverlay/Darkness")
-SOUND_EFFECT_HANDLER = NodePath("../SoundEffectHandler")
-GAME_OVER_CONTAINER = NodePath("../GameOver/CenterContainer")
-GAME_OVER_STAT_LABEL = NodePath("../GameOver/CenterContainer/VBoxContainer/GameOverStatLabel")
-DIE_SOUND_EFFECT = ExtResource("3_2uvxc")
-PICKUP_SOUND_EFFECT = ExtResource("4_ocy1m")
 
-[node name="ItemHandler" type="Node" parent="."]
-script = ExtResource("1_3ui0b")
-
-[node name="BoardTilemap" type="TileMap" parent="."]
+[node name="BoardTilemap" type="TileMap" parent="." node_paths=PackedStringArray("ITEM_TILEMAP", "PLAYER")]
 texture_filter = 1
 tile_set = ExtResource("1_48wdh")
 format = 2
 script = ExtResource("2_am8jv")
+ITEM_TILEMAP = NodePath("../ItemTilemap")
+PLAYER = NodePath("../Player")
 
-[node name="ItemTilemap" type="TileMap" parent="." groups=["items"]]
+[node name="ItemTilemap" type="TileMap" parent="." node_paths=PackedStringArray("BOARD_TILEMAP", "PARTICLES", "DARKNESS_OVERLAY", "SOUND_EFFECT_HANDLER") groups=["items"]]
 texture_filter = 1
 tile_set = ExtResource("1_48wdh")
 format = 2
 script = ExtResource("3_s163v")
+BOARD_TILEMAP = NodePath("../BoardTilemap")
+PARTICLES = NodePath("../Particles")
+DARKNESS_OVERLAY = NodePath("../EffectOverlay/Darkness")
+SOUND_EFFECT_HANDLER = NodePath("../SoundEffectHandler")
+PICKUP_SOUND_EFFECT = ExtResource("4_ocy1m")
 
 [node name="Particles" type="GPUParticles2D" parent="."]
 emitting = false
@@ -77,26 +83,6 @@ fixed_fps = 1000
 [node name="Player" parent="." instance=ExtResource("3_6ywuo")]
 rotation = 0.785398
 scale = Vector2(0.5, 0.5)
-
-[node name="Debug" type="CanvasLayer" parent="."]
-visible = false
-
-[node name="TextEdit" type="TextEdit" parent="Debug"]
-offset_left = 32.0
-offset_top = 32.0
-offset_right = 532.0
-offset_bottom = 308.0
-theme_override_colors/background_color = Color(0, 0, 0, 0)
-theme_override_fonts/font = SubResource("SystemFont_aqc1x")
-theme_override_font_sizes/font_size = 24
-editable = false
-context_menu_enabled = false
-shortcut_keys_enabled = false
-selecting_enabled = false
-deselect_on_focus_loss_enabled = false
-drag_and_drop_selection_enabled = false
-virtual_keyboard_enabled = false
-middle_mouse_paste_enabled = false
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -134,7 +120,7 @@ theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EffectLabel" type="Label" parent="UI"]
+[node name="EffectText" type="Label" parent="UI"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -148,7 +134,7 @@ theme_override_colors/font_shadow_color = Color(0.188235, 0.188235, 0.188235, 1)
 theme_override_font_sizes/font_size = 40
 text = "EFFECT"
 
-[node name="Effect" type="Label" parent="UI/EffectLabel"]
+[node name="EffectLabel" type="Label" parent="UI/EffectText"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -272,7 +258,10 @@ theme = ExtResource("7_vbg7s")
 theme_override_font_sizes/font_size = 36
 text = "MENU"
 
-[node name="Pause" type="CanvasLayer" parent="."]
+[node name="Pause" type="CanvasLayer" parent="." node_paths=PackedStringArray("PAUSE_CONTAINER")]
+process_mode = 3
+script = ExtResource("13_j5kvh")
+PAUSE_CONTAINER = NodePath("CenterContainer")
 
 [node name="CenterContainer" type="CenterContainer" parent="Pause"]
 visible = false
@@ -305,7 +294,7 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
-[node name="Restart" type="Button" parent="Pause/CenterContainer/VBoxContainer/HBoxContainer"]
+[node name="Resume" type="Button" parent="Pause/CenterContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 theme = ExtResource("7_vbg7s")
@@ -324,6 +313,32 @@ theme_override_font_sizes/font_size = 36
 text = "MENU"
 
 [node name="Shader" parent="." instance=ExtResource("12_ei6ik")]
+
+[node name="Debug" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Debug"]
+visible = false
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 484.0
+offset_bottom = 304.0
+color = Color(0, 0, 0, 0.588235)
+
+[node name="MarginContainer" type="MarginContainer" parent="Debug/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="DebugText" type="RichTextLabel" parent="Debug/ColorRect/MarginContainer"]
+layout_mode = 2
+fit_content = true
 
 [node name="SoundEffectHandler" type="AudioStreamPlayer" parent="."]
 
@@ -346,5 +361,5 @@ volume_db = -10.0
 [connection signal="apply_item" from="Player" to="ItemTilemap" method="apply_item"]
 [connection signal="button_up" from="GameOver/CenterContainer/VBoxContainer/HBoxContainer/Restart" to="." method="start_game"]
 [connection signal="button_up" from="GameOver/CenterContainer/VBoxContainer/HBoxContainer/Menu" to="." method="return_to_menu"]
-[connection signal="button_up" from="Pause/CenterContainer/VBoxContainer/HBoxContainer/Restart" to="." method="start_game"]
+[connection signal="button_up" from="Pause/CenterContainer/VBoxContainer/HBoxContainer/Resume" to="Pause" method="pause_unpause"]
 [connection signal="button_up" from="Pause/CenterContainer/VBoxContainer/HBoxContainer/Menu" to="." method="return_to_menu"]

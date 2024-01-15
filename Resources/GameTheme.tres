@@ -1,6 +1,10 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dparfnssefxjx"]
+[gd_resource type="Theme" load_steps=18 format=3 uid="uid://dparfnssefxjx"]
 
 [ext_resource type="FontFile" uid="uid://cvckkwx5vscjm" path="res://Resources/Fonts/MesloLGS NF Regular.ttf" id="1_4siqr"]
+[ext_resource type="Texture2D" uid="uid://b7800s2a8ecoq" path="res://Resources/Image/CheckButtonOn.png" id="1_i446b"]
+[ext_resource type="Texture2D" uid="uid://kcglmmwqv4dx" path="res://Resources/Image/CheckButtonOnDisabled.png" id="2_uam3y"]
+[ext_resource type="Texture2D" uid="uid://djw6frk6jf1sm" path="res://Resources/Image/CheckButtonOff.png" id="3_o8yr7"]
+[ext_resource type="Texture2D" uid="uid://cmmqkwtarwwjd" path="res://Resources/Image/CheckButtonOffDisabled.png" id="4_ppdjt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03tv3"]
 bg_color = Color(0.686275, 0.686275, 0.686275, 1)
@@ -11,6 +15,24 @@ expand_margin_right = 2.0
 bg_color = Color(1, 1, 1, 1)
 expand_margin_left = 2.0
 expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bi1sm"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1rn5"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4516u"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qnamy"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_anwsq"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f33jv"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7t1b"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -31,6 +53,20 @@ Button/colors/font_focus_color = Color(0, 0, 0, 1)
 Button/colors/font_hover_color = Color(0, 0, 0, 1)
 Button/styles/hover = SubResource("StyleBoxFlat_03tv3")
 Button/styles/normal = SubResource("StyleBoxFlat_yrsus")
+CheckButton/icons/checked = ExtResource("1_i446b")
+CheckButton/icons/checked_disabled = ExtResource("2_uam3y")
+CheckButton/icons/checked_disabled_mirrored = null
+CheckButton/icons/checked_mirrored = null
+CheckButton/icons/unchecked = ExtResource("3_o8yr7")
+CheckButton/icons/unchecked_disabled = ExtResource("4_ppdjt")
+CheckButton/icons/unchecked_disabled_mirrored = null
+CheckButton/icons/unchecked_mirrored = null
+CheckButton/styles/disabled = SubResource("StyleBoxFlat_bi1sm")
+CheckButton/styles/focus = SubResource("StyleBoxFlat_x1rn5")
+CheckButton/styles/hover = SubResource("StyleBoxFlat_4516u")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxFlat_qnamy")
+CheckButton/styles/normal = SubResource("StyleBoxFlat_anwsq")
+CheckButton/styles/pressed = SubResource("StyleBoxFlat_f33jv")
 HSeparator/styles/separator = SubResource("StyleBoxFlat_k7t1b")
 Label/colors/font_shadow_color = Color(0.188235, 0.188235, 0.188235, 1)
 Label/constants/shadow_offset_x = 2

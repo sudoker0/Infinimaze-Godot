@@ -1,30 +1,15 @@
 extends Node
 
-var ITEM_HANDLER: Node
-var BOARD_TILEMAP: TileMap
-var ITEM_TILEMAP: TileMap
-var PARTICLES: GPUParticles2D
-var PLAYER: CharacterBody2D
-
-var TIMER_PROGRESS_BAR: ProgressBar
-var TIMER_LABEL: Label
-var INSTANT_EFFECT_LABEL: Label
-var EFFECT_LABEL: Label
-var SCORE_TIME_LABEL: Label
-
-var DARKNESS_OVERLAY: ColorRect
-var SOUND_EFFECT_HANDLER: AudioStreamPlayer
-
-var GAME_OVER_CONTAINER: Control
-var GAME_OVER_STAT_LABEL: Label
-
-var DIE_SOUND_EFFECT: AudioStream
-var PICKUP_SOUND_EFFECT: AudioStream
-
 enum Difficulty {
 	EASY,
 	MEDIUM,
 	HARD
+}
+
+enum WindowMode {
+	EXCLUSIVE_FULLSCREEN,
+	FULLSCREEN,
+	WINDOWED
 }
 
 const ITEM_STAT = {
@@ -128,30 +113,48 @@ const CONSTANT = {
 	"max_time": 100,
 	"crouching_speed_factor": 0.2,
 	"initial_time": 60,
-	"chunk_filepath": "user://chunk-x%sy%s.data"
+	"chunk_filepath": "user://chunk-x%sy%s.data",
+	"settings_filepath": "user://config.cfg"
 }
 
 const SCENE = {
 	"main": "res://Scene/Main.tscn",
 	"menu": "res://Scene/Menu.tscn",
+	"options": "res://Scene/Options.tscn",
+	"about": "res://Scene/About.tscn",
 }
 
 var currentGameState = {
 	"stopped": false,
-	"endTime": 0,
-	"score": 0,
-	"difficulty": Difficulty.MEDIUM
+	"timeleft": 0,
+	"elapsed": 0,
+	"score": 0
+}
+
+var WINDOW_MODE_MAP = {
+	WindowMode.EXCLUSIVE_FULLSCREEN: Window.MODE_EXCLUSIVE_FULLSCREEN,
+	WindowMode.FULLSCREEN: Window.MODE_FULLSCREEN,
+	WindowMode.WINDOWED: Window.MODE_WINDOWED
 }
 
 const TEXT = {
 	"timer_text": "TIME LEFT: %.2fs",
 	"teleported_text": "TELEPORTED!",
 	"score_time_text": "SCORE: %s | ELAPSED: %ss",
-	"game_over_stat_text": "YOU SURVIVED FOR %s SECONDS AND SCORED %s POINTS"
+	"game_over_stat_text": "YOU SURVIVED FOR %s SECONDS AND SCORED %s POINTS",
+	"easy_difficulty": "EASY",
+	"medium_difficulty": "MEDIUM",
+	"hard_difficulty": "HARD",
+	"exclusive_fullscreen_window_mode": "EXCLUSIVE FULLSCREEN",
+	"fullscreen_window_mode": "FULLSCREEN",
+	"windowed_window_mode": "WINDOWED",
 }
 
 var CONFIG = {
+	"window_mode_option": WindowMode.EXCLUSIVE_FULLSCREEN,
+	"difficulty": Difficulty.MEDIUM,
+	"crt_shader_scanline": true,
+	"crt_shader_chromatic_aberration": true,
 	"sound_effect_volume": 100,
-	"background_volume": 100,
 	"debug": false,
 }

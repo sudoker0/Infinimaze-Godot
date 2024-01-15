@@ -11,9 +11,11 @@ config_version=5
 [application]
 
 config/name="Infinimaze"
-run/main_scene="res://Scene/Menu.tscn"
+config/version="0.4.0"
+run/main_scene="res://Scene/Splash.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
 boot_splash/image="res://Resources/Image/splash.png"
 boot_splash/fullsize=false
 config/icon="res://Resources/Image/Logo.png"
@@ -21,6 +23,7 @@ config/icon="res://Resources/Image/Logo.png"
 [autoload]
 
 Global="*res://Script/Global.gd"
+Preload="*res://Script/Preload.gd"
 
 [display]
 

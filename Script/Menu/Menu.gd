@@ -19,9 +19,12 @@ func button_play():
 	get_tree().change_scene_to_file(Global.SCENE.main)
 
 func button_option():
-	pass
+	get_tree().change_scene_to_file(Global.SCENE.options)
 
 func button_about():
+	get_tree().change_scene_to_file(Global.SCENE.about)
+
+func button_help():
 	pass
 
 func button_exit():

@@ -76,6 +76,14 @@ text = "ABOUT"
 [node name="HSeparator4" type="HSeparator" parent="CanvasLayer/CenterContainer/VSplitContainer"]
 layout_mode = 2
 
+[node name="HelpButton" type="Button" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 54
+text = "HELP"
+
+[node name="HSeparator5" type="HSeparator" parent="CanvasLayer/CenterContainer/VSplitContainer"]
+layout_mode = 2
+
 [node name="ExitButton" type="Button" parent="CanvasLayer/CenterContainer/VSplitContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 54
@@ -86,4 +94,5 @@ text = "EXIT"
 [connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/PlayButton" to="." method="button_play"]
 [connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/OptionButton" to="." method="button_option"]
 [connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/AboutButton" to="." method="button_about"]
+[connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/HelpButton" to="." method="button_help"]
 [connection signal="button_up" from="CanvasLayer/CenterContainer/VSplitContainer/ExitButton" to="." method="button_exit"]

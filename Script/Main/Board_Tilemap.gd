@@ -1,6 +1,9 @@
 extends TileMap
 signal finished_generating_chunk(chunkCoord: Vector2i)
 
+@export var ITEM_TILEMAP: TileMap
+@export var PLAYER: CharacterBody2D
+
 var rng = RandomNumberGenerator.new()
 var generatedChunk = []
 
@@ -39,7 +42,6 @@ func generateMaze(chunkCoord = Vector2i(0, 0)):
 	var startPos = chunkCoord * chunkSize
 	var currentCell = startPos
 
-	var board = self
 	var visitedList = {}
 	var stack = []
 	var neighbors = [
@@ -56,7 +58,7 @@ func generateMaze(chunkCoord = Vector2i(0, 0)):
 				type = Global.BOARD_BLOCK.PATH
 			else:
 				type = Global.BOARD_BLOCK.WALL
-			board.set_cell(0, Vector2i(i, j), 0, type)
+			set_cell(0, Vector2i(i, j), 0, type)
 			visitedList[Vector2i(i, j)] = false
 
 	visitedList[currentCell] = true
@@ -77,7 +79,7 @@ func generateMaze(chunkCoord = Vector2i(0, 0)):
 			var neighbor = possibleNeighbor[rng.randi_range(0, len(possibleNeighbor) - 1)]
 			var wallToDelete = (currentCell + neighbor) / 2
 
-			board.set_cell(0, wallToDelete, 0, Global.BOARD_BLOCK.PATH)
+			set_cell(0, wallToDelete, 0, Global.BOARD_BLOCK.PATH)
 			visitedList[neighbor] = true
 			stack.append(neighbor)
 
@@ -114,9 +116,9 @@ func generateMaze(chunkCoord = Vector2i(0, 0)):
 				"x":
 					leftCellPos = Vector2i(i, -1)
 					rightCellPos = Vector2i(i, 1)
-			var leftCell = board.get_cell_atlas_coords(0,
+			var leftCell = get_cell_atlas_coords(0,
 				currentCell + leftCellPos)
-			var rightCell = board.get_cell_atlas_coords(0,
+			var rightCell = get_cell_atlas_coords(0,
 				currentCell + rightCellPos)
 
 			if leftCell == Vector2i(-1, -1) or rightCell == Vector2i(-1, -1):
@@ -125,7 +127,7 @@ func generateMaze(chunkCoord = Vector2i(0, 0)):
 				if alreadyBlend:
 					continue
 				alreadyBlend = true
-				board.set_cell(0,
+				set_cell(0,
 					currentCell + (leftCellPos + rightCellPos) / 2, 0,
 					Global.BOARD_BLOCK.PATH)
 			else:
@@ -137,12 +139,11 @@ func removeMaze(chunkCoord: Vector2i):
 	var startPos = chunkCoord * chunkSize
 	var width = chunkSize
 	var height = chunkSize
-	var board = self
 
 	for i in range(startPos.x, startPos.x + width):
 		for j in range(startPos.y, startPos.y + height):
-			board.set_cell(0, Vector2i(i, j), 0, Vector2i(-1, -1))
-			Global.ITEM_TILEMAP.set_cell(0, Vector2i(i, j), 0, Vector2i(-1, -1))
+			set_cell(0, Vector2i(i, j), 0, Vector2i(-1, -1))
+			ITEM_TILEMAP.set_cell(0, Vector2i(i, j), 0, Vector2i(-1, -1))
 
 func reset():
 	for i in generatedChunk:
@@ -174,5 +175,5 @@ func _ready():
 
 func _process(_delta):
 	generateChunkMaze(
-		floor(Global.PLAYER.position / Global.CONSTANT.block_size / chunkSize)
+		floor(PLAYER.position / Global.CONSTANT.block_size / chunkSize)
 	)

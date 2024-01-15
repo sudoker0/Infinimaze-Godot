@@ -1,0 +1,209 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnscwpp3tk8tj"]
+
+[ext_resource type="Script" path="res://Script/Options/Options.gd" id="1_hndn8"]
+[ext_resource type="PackedScene" uid="uid://cql1l41b2mqps" path="res://Scene/Shader.tscn" id="1_qv87g"]
+[ext_resource type="Theme" uid="uid://dparfnssefxjx" path="res://Resources/GameTheme.tres" id="2_6wl7g"]
+
+[node name="Options" type="Node2D" node_paths=PackedStringArray("DIFFICULTY_OPTION", "WINDOW_MODE_OPTION", "ENABLE_SCANLINE_CHECK", "ENABLE_CHROMATIC_ABERRATION_CHECK", "SFX_VOLUME_SLIDER", "DEBUG_DIALOG_CHECK", "CHANGE_SAVED_DIALOG")]
+script = ExtResource("1_hndn8")
+DIFFICULTY_OPTION = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/DifficultyOption")
+WINDOW_MODE_OPTION = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/WindowModeOption")
+ENABLE_SCANLINE_CHECK = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/EnableScanlineCheck")
+ENABLE_CHROMATIC_ABERRATION_CHECK = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/EnableChromaticAberrationCheck")
+SFX_VOLUME_SLIDER = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/SFXVolumeSlider")
+DEBUG_DIALOG_CHECK = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/DebugDialogCheck")
+CHANGE_SAVED_DIALOG = NodePath("ChangeSaved/CenterContainer")
+metadata/_edit_horizontal_guides_ = [540.0]
+metadata/_edit_vertical_guides_ = [720.0]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(720, 540)
+color = Color(0.12549, 0.12549, 0.12549, 1)
+
+[node name="Title" type="Label" parent="CanvasLayer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 64.0
+offset_bottom = 146.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 64
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 320.0
+offset_top = 180.0
+offset_right = -320.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(400, 0)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/v_separation = 16
+columns = 2
+
+[node name="Difficulty" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "DIFFICULTY"
+
+[node name="DifficultyOption" type="OptionButton" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 24
+
+[node name="WindowMode" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "WINDOW MODE"
+
+[node name="WindowModeOption" type="OptionButton" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 24
+
+[node name="EnableScanline" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "ENABLE SCANLINE"
+
+[node name="EnableScanlineCheck" type="CheckButton" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="EnableChromaticAberration" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "ENABLE CHROMATIC
+ABERRATION"
+
+[node name="EnableChromaticAberrationCheck" type="CheckButton" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 3
+
+[node name="SFXVolume" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "SOUND EFFECT VOLUME"
+
+[node name="SFXVolumeSlider" type="HSlider" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 6
+step = 5.0
+
+[node name="DebugDialog" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "ENBLE DEBUG DIALOG"
+
+[node name="DebugDialogCheck" type="CheckButton" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Save" type="Button" parent="CanvasLayer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SAVE"
+
+[node name="VSeparator" type="VSeparator" parent="CanvasLayer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Exit" type="Button" parent="CanvasLayer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "EXIT"
+
+[node name="ChangeSaved" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="ChangeSaved"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+
+[node name="ColorRect" type="ColorRect" parent="ChangeSaved/CenterContainer"]
+custom_minimum_size = Vector2(800, 500)
+layout_mode = 2
+color = Color(0, 0, 0, 0.745098)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ChangeSaved/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ChangeSaved/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "CHANGES SAVED!"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="ChangeSaved/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ChangeSaved/CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="OK" type="Button" parent="ChangeSaved/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme = ExtResource("2_6wl7g")
+theme_override_font_sizes/font_size = 36
+text = "OK"
+
+[node name="Shader" parent="." instance=ExtResource("1_qv87g")]
+
+[connection signal="button_up" from="CanvasLayer/HBoxContainer/Save" to="." method="_on_save_button_up"]
+[connection signal="button_up" from="CanvasLayer/HBoxContainer/Exit" to="." method="_on_exit_button_up"]
+[connection signal="button_up" from="ChangeSaved/CenterContainer/VBoxContainer/HBoxContainer/OK" to="." method="_on_ok_change_saved_button_up"]

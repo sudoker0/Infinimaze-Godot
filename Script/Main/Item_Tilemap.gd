@@ -1,5 +1,12 @@
 extends TileMap
 
+@export var BOARD_TILEMAP: TileMap
+@export var PARTICLES: GPUParticles2D
+
+@export var DARKNESS_OVERLAY: ColorRect
+@export var SOUND_EFFECT_HANDLER: AudioStreamPlayer
+@export var PICKUP_SOUND_EFFECT: AudioStream
+
 signal clock_handler
 signal randomized_clock_handler
 signal speed_boost_handler
@@ -51,7 +58,8 @@ var ITEM_METADATA = {
 	Vector2i(6, 1): {
 		"type": Global.ITEMS.BOMB,
 		"effect_function": "bomb_handler",
-		"chance": 0.00008
+		"chance": 0.00008,
+		"score": 0,
 	},
 	Vector2i(7, 1): {
 		"type": Global.ITEMS.BANANA_PEEL,
@@ -67,15 +75,6 @@ var ITEM_METADATA = {
 	}
 }
 
-# item (second row of texture):
-# 0: clock
-# 1: randomized clock
-# 2: speed boost
-# 3: noclip
-# 4: teleporter
-# 5: trap
-# 6: bomb
-# 7: Banana peel
 func place_item(chunkCoord = Vector2i(0, 0)):
 	var startPos = chunkCoord * Global.CONSTANT.chunk_size
 	var width = Global.CONSTANT.chunk_size
@@ -86,7 +85,7 @@ func place_item(chunkCoord = Vector2i(0, 0)):
 		for j in range(startPos.y, startPos.y + height):
 			if i == 0 and j ==0:
 				continue
-			if Global.BOARD_TILEMAP\
+			if BOARD_TILEMAP\
 				.get_cell_atlas_coords(0, Vector2i(i, j)) != Global.BOARD_BLOCK.PATH:
 				continue
 			var dice = rng.randf_range(0, 1)
@@ -101,9 +100,9 @@ func place_item(chunkCoord = Vector2i(0, 0)):
 					totalChance += chance
 
 func apply_item(location):
-	Global.PARTICLES.position = (location * Global.CONSTANT.block_size)\
+	PARTICLES.position = (location * Global.CONSTANT.block_size)\
 		+ Global.CONSTANT.block_size * Vector2i(1, 1) / 2
-	Global.PARTICLES.emitting = true
+	PARTICLES.emitting = true
 
 	var itemAtlasCoords = get_cell_atlas_coords(0, location)
 	var item = ITEM_METADATA.get(itemAtlasCoords)
@@ -114,5 +113,5 @@ func apply_item(location):
 	Global.currentGameState.score += item.score
 	emit_signal(item.effect_function)
 
-	Global.SOUND_EFFECT_HANDLER.stream = Global.PICKUP_SOUND_EFFECT
-	Global.SOUND_EFFECT_HANDLER.play()
+	SOUND_EFFECT_HANDLER.stream = PICKUP_SOUND_EFFECT
+	SOUND_EFFECT_HANDLER.play()
