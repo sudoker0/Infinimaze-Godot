@@ -62,8 +62,6 @@ bbcode_enabled = true
 text = "The game's objective is to survive as long as possible on an infintely generating maze.
 
 There will be a \"TIME LEFT\" bar on the top, indicating how much time you have before you die. And to survive, there are many items scattered on the map, which can either help you, or harm you, or do other things to you.
-
-Detail of each item:
 "
 fit_content = true
 

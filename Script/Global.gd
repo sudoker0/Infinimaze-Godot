@@ -122,6 +122,7 @@ const SCENE = {
 	"menu": "res://Scene/Menu.tscn",
 	"options": "res://Scene/Options.tscn",
 	"about": "res://Scene/About.tscn",
+	"help": "res://Scene/Help.tscn",
 }
 
 var currentGameState = {

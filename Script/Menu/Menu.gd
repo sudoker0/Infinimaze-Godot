@@ -25,7 +25,7 @@ func button_about():
 	get_tree().change_scene_to_file(Global.SCENE.about)
 
 func button_help():
-	pass
+	get_tree().change_scene_to_file(Global.SCENE.help)
 
 func button_exit():
 	get_tree().quit()
