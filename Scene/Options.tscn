@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cql1l41b2mqps" path="res://Scene/Shader.tscn" id="1_qv87g"]
 [ext_resource type="Theme" uid="uid://dparfnssefxjx" path="res://Resources/GameTheme.tres" id="2_6wl7g"]
 
-[node name="Options" type="Node2D" node_paths=PackedStringArray("DIFFICULTY_OPTION", "WINDOW_MODE_OPTION", "ENABLE_SCANLINE_CHECK", "ENABLE_CHROMATIC_ABERRATION_CHECK", "SFX_VOLUME_SLIDER", "DEBUG_DIALOG_CHECK", "CHANGE_SAVED_DIALOG")]
+[node name="Options" type="Node2D" node_paths=PackedStringArray("DIFFICULTY_OPTION", "WINDOW_MODE_OPTION", "ENABLE_SCANLINE_CHECK", "ENABLE_CHROMATIC_ABERRATION_CHECK", "SFX_VOLUME_SLIDER", "DEBUG_DIALOG_CHECK", "CHANGE_SAVED_DIALOG", "PLAYER_SKIN_CHOOSER")]
 script = ExtResource("1_hndn8")
 DIFFICULTY_OPTION = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/DifficultyOption")
 WINDOW_MODE_OPTION = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/WindowModeOption")
@@ -13,6 +13,7 @@ ENABLE_CHROMATIC_ABERRATION_CHECK = NodePath("CanvasLayer/ScrollContainer/Margin
 SFX_VOLUME_SLIDER = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/SFXVolumeSlider")
 DEBUG_DIALOG_CHECK = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/DebugDialogCheck")
 CHANGE_SAVED_DIALOG = NodePath("ChangeSaved/CenterContainer")
+PLAYER_SKIN_CHOOSER = NodePath("CanvasLayer/PlayerSkinChooser")
 metadata/_edit_horizontal_guides_ = [540.0]
 metadata/_edit_vertical_guides_ = [720.0]
 
@@ -134,6 +135,29 @@ text = "ENBLE DEBUG DIALOG"
 layout_mode = 2
 size_flags_horizontal = 10
 
+[node name="PlayerSkin" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "PLAYER SKIN"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="PlayerSkinChooseButton" type="Button" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "CHOOSE FILE"
+
+[node name="VSeparator" type="VSeparator" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PlayerSkinReset" type="Button" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "RESET"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 12
 anchor_top = 1.0
@@ -160,6 +184,14 @@ custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "EXIT"
+
+[node name="PlayerSkinChooser" type="FileDialog" parent="CanvasLayer"]
+title = "Open a File"
+size = Vector2i(312, 154)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+use_native_dialog = true
 
 [node name="ChangeSaved" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -204,6 +236,9 @@ text = "OK"
 
 [node name="Shader" parent="." instance=ExtResource("1_qv87g")]
 
+[connection signal="button_up" from="CanvasLayer/ScrollContainer/MarginContainer/GridContainer/HBoxContainer/PlayerSkinChooseButton" to="." method="choose_player_skin"]
+[connection signal="button_up" from="CanvasLayer/ScrollContainer/MarginContainer/GridContainer/HBoxContainer/PlayerSkinReset" to="." method="reset_player_skin"]
 [connection signal="button_up" from="CanvasLayer/HBoxContainer/Save" to="." method="_on_save_button_up"]
 [connection signal="button_up" from="CanvasLayer/HBoxContainer/Exit" to="." method="_on_exit_button_up"]
+[connection signal="file_selected" from="CanvasLayer/PlayerSkinChooser" to="." method="_on_player_skin_chooser_file_selected"]
 [connection signal="button_up" from="ChangeSaved/CenterContainer/VBoxContainer/HBoxContainer/OK" to="." method="_on_ok_change_saved_button_up"]

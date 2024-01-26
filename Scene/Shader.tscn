@@ -9,7 +9,7 @@
 shader = ExtResource("1_asalw")
 shader_parameter/scanline_count = 200.0
 shader_parameter/enable_scanline = true
-shader_parameter/chromatic_aberration_offset = Vector2(2.5, -2.5)
+shader_parameter/chromatic_aberration_offset = Vector2(2, -2)
 shader_parameter/enable_chromatic_aberration = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u2v1v"]

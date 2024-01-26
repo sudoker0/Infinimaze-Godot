@@ -1,8 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://ctbepwfekb4km"]
+[gd_scene load_steps=12 format=3 uid="uid://ctbepwfekb4km"]
 
+[ext_resource type="Script" path="res://Script/Help/Help.gd" id="1_0y578"]
 [ext_resource type="PackedScene" uid="uid://cql1l41b2mqps" path="res://Scene/Shader.tscn" id="1_d2nvl"]
+[ext_resource type="Texture2D" uid="uid://do3skural05ev" path="res://Resources/Image/Help/add_time.png" id="2_tp31p"]
+[ext_resource type="Texture2D" uid="uid://cdeeq0rsyhthu" path="res://Resources/Image/Help/add_time_random.png" id="3_v3hjp"]
+[ext_resource type="Texture2D" uid="uid://dfm4fstcyxlr1" path="res://Resources/Image/Help/banana_peel.png" id="4_poqdd"]
+[ext_resource type="Texture2D" uid="uid://ed4yb1my7skj" path="res://Resources/Image/Help/bomb.png" id="5_lacao"]
+[ext_resource type="Texture2D" uid="uid://kbxnc8wdrk7g" path="res://Resources/Image/Help/darkness.png" id="6_afosw"]
+[ext_resource type="Texture2D" uid="uid://dk7u2412i0oes" path="res://Resources/Image/Help/freeze.png" id="7_mttsv"]
+[ext_resource type="Texture2D" uid="uid://dmei1m6r76vuk" path="res://Resources/Image/Help/noclip.png" id="8_lj2q0"]
+[ext_resource type="Texture2D" uid="uid://c8vgwskovq7xt" path="res://Resources/Image/Help/speed_boost.png" id="9_gfvxc"]
+[ext_resource type="Texture2D" uid="uid://cgkkesc0j8gme" path="res://Resources/Image/Help/teleport.png" id="10_w4kuv"]
 
 [node name="Help" type="Node2D"]
+script = ExtResource("1_0y578")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -61,9 +72,158 @@ theme_override_font_sizes/mono_font_size = 24
 bbcode_enabled = true
 text = "The game's objective is to survive as long as possible on an infintely generating maze.
 
-There will be a \"TIME LEFT\" bar on the top, indicating how much time you have before you die. And to survive, there are many items scattered on the map, which can either help you, or harm you, or do other things to you.
-"
+There will be a \"TIME LEFT\" bar on the top, indicating how much time you have before you die. And to survive, there are many items scattered on the map, which can either help you, or harm you.
+
+Details of each items:"
 fit_content = true
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("2_tp31p")
+
+[node name="RichTextLabel" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "TIME: Add an amount of time to the \"TIME LEFT\" bar"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("3_v3hjp")
+
+[node name="RichTextLabel2" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "RANDOM TIME: Add or Remove an amount of time to the \"TIME LEFT\" bar."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("4_poqdd")
+
+[node name="RichTextLabel3" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "BANANA PEEL: Reduce the player's friction when moving."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("5_lacao")
+
+[node name="RichTextLabel4" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "BOMB: Kill the player instantly."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect5" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("6_afosw")
+
+[node name="RichTextLabel5" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "DARKNESS: Reduce the player's field of view."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect6" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("7_mttsv")
+
+[node name="RichTextLabel6" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "FREEZE: Lock the current position of the player."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect7" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("8_lj2q0")
+
+[node name="RichTextLabel7" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "NOCLIP: Allow the player to move through wall."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect8" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("9_gfvxc")
+
+[node name="RichTextLabel8" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "SPEED BOOST: Increase the speed of the player."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureRect9" type="TextureRect" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("10_w4kuv")
+
+[node name="RichTextLabel9" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "TELEPORT: Teleport the player to a random location on the map."
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 12
@@ -83,3 +243,5 @@ theme_override_font_sizes/font_size = 32
 text = "EXIT"
 
 [node name="Shader" parent="." instance=ExtResource("1_d2nvl")]
+
+[connection signal="button_up" from="CanvasLayer/HBoxContainer/Exit" to="." method="_on_exit_button_up"]

@@ -114,7 +114,9 @@ const CONSTANT = {
 	"crouching_speed_factor": 0.2,
 	"initial_time": 60,
 	"chunk_filepath": "user://chunk-x%sy%s.data",
-	"settings_filepath": "user://config.cfg"
+	"settings_filepath": "user://config.cfg",
+	"default_player_skin": "res://Resources/Image/player.png",
+	"custom_player_skin": "user://custom_skin.png",
 }
 
 const SCENE = {
@@ -158,4 +160,28 @@ var CONFIG = {
 	"crt_shader_chromatic_aberration": true,
 	"sound_effect_volume": 100,
 	"debug": false,
+	"player_skin_path": CONSTANT.default_player_skin,
 }
+
+func load_config():
+	var config = ConfigFile.new()
+	var status = config.load(CONSTANT.settings_filepath)
+
+	if status != OK:
+		save_config()
+		return
+
+	for i in config.get_section_keys("main"):
+		if CONFIG.get(i, null) == null:
+			continue
+		CONFIG[i] = config.get_value("main", i)
+
+func save_config():
+	var config = ConfigFile.new()
+	for i in CONFIG.keys():
+		config.set_value("main", i, CONFIG[i])
+	config.save(CONSTANT.settings_filepath)
+	Preload.apply_config()
+
+func _ready():
+	load_config()

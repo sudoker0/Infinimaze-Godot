@@ -8,6 +8,7 @@ extends Node2D
 @export var DEBUG_DIALOG_CHECK: CheckButton
 
 @export var CHANGE_SAVED_DIALOG: Container
+@export var PLAYER_SKIN_CHOOSER: FileDialog
 
 var difficultyMap = {
 	Global.Difficulty.EASY: Global.TEXT.easy_difficulty,
@@ -27,7 +28,7 @@ func _ready():
 		DIFFICULTY_OPTION.add_item(difficultyMap[i], i)
 	for i in windowModeMap.keys():
 		WINDOW_MODE_OPTION.add_item(windowModeMap[i], i)
-	load_config()
+	Global.load_config()
 
 	DIFFICULTY_OPTION.selected = Global.CONFIG.difficulty
 	WINDOW_MODE_OPTION.selected = Global.CONFIG.window_mode_option
@@ -36,34 +37,8 @@ func _ready():
 	SFX_VOLUME_SLIDER.value = Global.CONFIG.sound_effect_volume
 	DEBUG_DIALOG_CHECK.button_pressed = Global.CONFIG.debug
 
-func load_config():
-	var config = ConfigFile.new()
-	var status = config.load(Global.CONSTANT.settings_filepath)
-
-	if status != OK:
-		save_config()
-		return
-
-	for i in config.get_section_keys("main"):
-		if Global.CONFIG.get(i, null) == null:
-			continue
-		Global.CONFIG[i] = config.get_value("main", i)
-
 func center_pivot(node):
 	node.pivot_offset = node.size / 2
-
-func save_config():
-	var config = ConfigFile.new()
-	for i in Global.CONFIG.keys():
-		config.set_value("main", i, Global.CONFIG[i])
-	config.save(Global.CONSTANT.settings_filepath)
-	Preload.apply_config()
-
-	CHANGE_SAVED_DIALOG.visible = true
-	var tween = create_tween()
-	tween\
-		.tween_property(CHANGE_SAVED_DIALOG, "scale", Vector2(1.0, 1.0), 0.1)\
-		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 
 func _on_ok_change_saved_button_up():
 	CHANGE_SAVED_DIALOG.visible = false
@@ -76,7 +51,13 @@ func _on_save_button_up():
 	Global.CONFIG.crt_shader_chromatic_aberration = ENABLE_CHROMATIC_ABERRATION_CHECK.button_pressed
 	Global.CONFIG.sound_effect_volume = SFX_VOLUME_SLIDER.value
 	Global.CONFIG.debug = DEBUG_DIALOG_CHECK.button_pressed
-	save_config()
+
+	Global.save_config()
+	CHANGE_SAVED_DIALOG.visible = true
+	var tween = create_tween()
+	tween\
+		.tween_property(CHANGE_SAVED_DIALOG, "scale", Vector2(1.0, 1.0), 0.1)\
+		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 
 func _on_exit_button_up():
 	get_tree().change_scene_to_file(Global.SCENE.menu)
@@ -84,5 +65,12 @@ func _on_exit_button_up():
 func _process(delta):
 	center_pivot(CHANGE_SAVED_DIALOG)
 
-func _on_reset_settings_button_up():
-	pass # Replace with function body.
+func choose_player_skin():
+	PLAYER_SKIN_CHOOSER.add_filter("*.png, *.jpg")
+	PLAYER_SKIN_CHOOSER.popup()
+
+func reset_player_skin():
+	Global.CONFIG.player_skin_path = Global.CONSTANT.default_player_skin
+
+func _on_player_skin_chooser_file_selected(path):
+	Global.CONFIG.player_skin_path = path

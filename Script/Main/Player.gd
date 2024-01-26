@@ -2,6 +2,8 @@ extends CharacterBody2D
 signal apply_item(location: Vector2i)
 
 @export var CAMERA: Camera2D
+@export var TEXTURE: TextureRect
+
 @onready var rand = RandomNumberGenerator.new()
 @onready var noise = FastNoiseLite.new()
 
@@ -51,6 +53,9 @@ func game_over():
 	apply_noise_shake()
 
 func _ready():
+	var image = Image.new()
+	image.load(Global.CONFIG.player_skin_path)
+	TEXTURE.texture = ImageTexture.create_from_image(image)
 	rand.randomize()
 	noise.seed = rand.randi()
 
@@ -64,8 +69,6 @@ func _physics_process(delta):
 	var factor = 1
 	if Input.is_action_pressed("croutch"):
 		factor = Global.CONSTANT.crouching_speed_factor
-	if not FREEZE:
-		player_movement(delta, factor)
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
@@ -73,3 +76,7 @@ func _physics_process(delta):
 			var tile_pos = collider.local_to_map(position)
 			emit_signal("apply_item", tile_pos - Vector2i(collision.get_normal()))
 			apply_noise_shake(30)
+	if not FREEZE:
+		player_movement(delta, factor)
+	else:
+		move_and_slide()
