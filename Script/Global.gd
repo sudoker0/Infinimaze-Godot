@@ -159,6 +159,7 @@ var CONFIG = {
 	"crt_shader_scanline": true,
 	"crt_shader_chromatic_aberration": true,
 	"sound_effect_volume": 100,
+	"bg_music_volume": 50,
 	"debug": false,
 	"player_skin_path": CONSTANT.default_player_skin,
 }

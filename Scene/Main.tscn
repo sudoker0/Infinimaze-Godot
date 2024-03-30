@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c5dy7lcsxhgj0"]
+[gd_scene load_steps=16 format=3 uid="uid://c5dy7lcsxhgj0"]
 
 [ext_resource type="Script" path="res://Script/Main/Main.gd" id="1_2rirn"]
 [ext_resource type="Script" path="res://Script/Main/Item_Handler.gd" id="1_3ui0b"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shader" path="res://Resources/Shaders/Vignette.gdshader" id="10_yviwj"]
 [ext_resource type="PackedScene" uid="uid://cql1l41b2mqps" path="res://Scene/Shader.tscn" id="12_ei6ik"]
 [ext_resource type="Script" path="res://Script/Main/Pause.gd" id="13_j5kvh"]
+[ext_resource type="AudioStream" uid="uid://r6d633ygpb2n" path="res://Resources/Audio/bg_music.wav" id="14_2olar"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i5nwm"]
 shader = ExtResource("10_yviwj")
@@ -20,7 +21,7 @@ shader_parameter/vignette_intensity = 8.0
 shader_parameter/vignette_opacity = 0.75
 shader_parameter/vignette_rgb = Color(0, 0, 0, 1)
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("PARTICLES", "PLAYER", "TIMER_PROGRESS_BAR", "TIMER_LABEL", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL", "SCORE_TIME_LABEL", "SOUND_EFFECT_HANDLER", "GAME_OVER_CONTAINER", "GAME_OVER_STAT_LABEL", "PAUSE_CONTAINER", "DEBUG_CONTAINER", "DEBUG_TEXT")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("PARTICLES", "PLAYER", "TIMER_PROGRESS_BAR", "TIMER_LABEL", "INSTANT_EFFECT_LABEL", "EFFECT_LABEL", "SCORE_TIME_LABEL", "SOUND_EFFECT_HANDLER", "BACKGROUND_MUSIC_HANDLER", "GAME_OVER_CONTAINER", "GAME_OVER_STAT_LABEL", "PAUSE_CONTAINER", "DEBUG_CONTAINER", "DEBUG_TEXT")]
 script = ExtResource("1_2rirn")
 PARTICLES = NodePath("Particles")
 PLAYER = NodePath("Player")
@@ -30,6 +31,7 @@ INSTANT_EFFECT_LABEL = NodePath("UI/InstantEffect")
 EFFECT_LABEL = NodePath("UI/EffectText/EffectLabel")
 SCORE_TIME_LABEL = NodePath("UI/ScoreTimeLabel")
 SOUND_EFFECT_HANDLER = NodePath("SoundEffectHandler")
+BACKGROUND_MUSIC_HANDLER = NodePath("BackgroundMusicHandler")
 GAME_OVER_CONTAINER = NodePath("GameOver/CenterContainer")
 GAME_OVER_STAT_LABEL = NodePath("GameOver/CenterContainer/VBoxContainer/GameOverStatLabel")
 PAUSE_CONTAINER = NodePath("Pause/CenterContainer")
@@ -342,8 +344,9 @@ fit_content = true
 
 [node name="SoundEffectHandler" type="AudioStreamPlayer" parent="."]
 
-[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
-volume_db = -10.0
+[node name="BackgroundMusicHandler" type="AudioStreamPlayer" parent="."]
+process_mode = 1
+stream = ExtResource("14_2olar")
 
 [connection signal="game_over_signal" from="." to="Player" method="game_over"]
 [connection signal="game_start_signal" from="." to="ItemHandler" method="reset"]

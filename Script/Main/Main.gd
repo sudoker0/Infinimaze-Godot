@@ -10,6 +10,7 @@ extends Node2D
 @export var SCORE_TIME_LABEL: Label
 
 @export var SOUND_EFFECT_HANDLER: AudioStreamPlayer
+@export var BACKGROUND_MUSIC_HANDLER: AudioStreamPlayer
 @export var GAME_OVER_CONTAINER: Control
 @export var GAME_OVER_STAT_LABEL: Label
 
@@ -36,6 +37,10 @@ func start_game():
 	Global.currentGameState.timeleft = Global.CONSTANT.initial_time * 1000
 	Global.currentGameState.elapsed = 0
 	Global.currentGameState.score = 0
+	
+	BACKGROUND_MUSIC_HANDLER.volume_db = linear_to_db(
+		Global.CONFIG.bg_music_volume / 100)
+	BACKGROUND_MUSIC_HANDLER.play()
 
 	emit_signal("game_start_signal")
 
@@ -58,6 +63,7 @@ func game_over(time, score):
 
 	SOUND_EFFECT_HANDLER.stream = DIE_SOUND_EFFECT
 	SOUND_EFFECT_HANDLER.play()
+	BACKGROUND_MUSIC_HANDLER.stop()
 
 	emit_signal("game_over_signal")
 	stop_game()

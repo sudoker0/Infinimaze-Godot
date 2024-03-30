@@ -4,13 +4,14 @@
 [ext_resource type="PackedScene" uid="uid://cql1l41b2mqps" path="res://Scene/Shader.tscn" id="1_qv87g"]
 [ext_resource type="Theme" uid="uid://dparfnssefxjx" path="res://Resources/GameTheme.tres" id="2_6wl7g"]
 
-[node name="Options" type="Node2D" node_paths=PackedStringArray("DIFFICULTY_OPTION", "WINDOW_MODE_OPTION", "ENABLE_SCANLINE_CHECK", "ENABLE_CHROMATIC_ABERRATION_CHECK", "SFX_VOLUME_SLIDER", "DEBUG_DIALOG_CHECK", "CHANGE_SAVED_DIALOG", "PLAYER_SKIN_CHOOSER")]
+[node name="Options" type="Node2D" node_paths=PackedStringArray("DIFFICULTY_OPTION", "WINDOW_MODE_OPTION", "ENABLE_SCANLINE_CHECK", "ENABLE_CHROMATIC_ABERRATION_CHECK", "SFX_VOLUME_SLIDER", "BG_MUSIC_VOLUME_SLIDER", "DEBUG_DIALOG_CHECK", "CHANGE_SAVED_DIALOG", "PLAYER_SKIN_CHOOSER")]
 script = ExtResource("1_hndn8")
 DIFFICULTY_OPTION = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/DifficultyOption")
 WINDOW_MODE_OPTION = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/WindowModeOption")
 ENABLE_SCANLINE_CHECK = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/EnableScanlineCheck")
 ENABLE_CHROMATIC_ABERRATION_CHECK = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/EnableChromaticAberrationCheck")
 SFX_VOLUME_SLIDER = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/SFXVolumeSlider")
+BG_MUSIC_VOLUME_SLIDER = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/BGMusicVolumeSlider")
 DEBUG_DIALOG_CHECK = NodePath("CanvasLayer/ScrollContainer/MarginContainer/GridContainer/DebugDialogCheck")
 CHANGE_SAVED_DIALOG = NodePath("ChangeSaved/CenterContainer")
 PLAYER_SKIN_CHOOSER = NodePath("CanvasLayer/PlayerSkinChooser")
@@ -119,6 +120,19 @@ theme_override_font_sizes/font_size = 32
 text = "SOUND EFFECT VOLUME"
 
 [node name="SFXVolumeSlider" type="HSlider" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 6
+step = 5.0
+
+[node name="BGMusicVolume" type="Label" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "BACKGROUND MUSIC VOLUME"
+
+[node name="BGMusicVolumeSlider" type="HSlider" parent="CanvasLayer/ScrollContainer/MarginContainer/GridContainer"]
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 size_flags_horizontal = 10

@@ -5,6 +5,7 @@ extends Node2D
 @export var ENABLE_SCANLINE_CHECK: CheckButton
 @export var ENABLE_CHROMATIC_ABERRATION_CHECK: CheckButton
 @export var SFX_VOLUME_SLIDER: HSlider
+@export var BG_MUSIC_VOLUME_SLIDER: Slider
 @export var DEBUG_DIALOG_CHECK: CheckButton
 
 @export var CHANGE_SAVED_DIALOG: Container
@@ -35,6 +36,7 @@ func _ready():
 	ENABLE_SCANLINE_CHECK.button_pressed = Global.CONFIG.crt_shader_scanline
 	ENABLE_CHROMATIC_ABERRATION_CHECK.button_pressed = Global.CONFIG.crt_shader_chromatic_aberration
 	SFX_VOLUME_SLIDER.value = Global.CONFIG.sound_effect_volume
+	BG_MUSIC_VOLUME_SLIDER.value = Global.CONFIG.bg_music_volume
 	DEBUG_DIALOG_CHECK.button_pressed = Global.CONFIG.debug
 
 func center_pivot(node):
@@ -51,6 +53,7 @@ func _on_save_button_up():
 	Global.CONFIG.crt_shader_chromatic_aberration = ENABLE_CHROMATIC_ABERRATION_CHECK.button_pressed
 	Global.CONFIG.sound_effect_volume = SFX_VOLUME_SLIDER.value
 	Global.CONFIG.debug = DEBUG_DIALOG_CHECK.button_pressed
+	Global.CONFIG.bg_music_volume = BG_MUSIC_VOLUME_SLIDER.value
 
 	Global.save_config()
 	CHANGE_SAVED_DIALOG.visible = true
